@@ -4,6 +4,6 @@
     <title></title>
 </head>
 <body>
-    Oops! Some thing go wrong!
+Oops! Some thing go wrong!
 </body>
 </html>

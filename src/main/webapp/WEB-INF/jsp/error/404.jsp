@@ -4,6 +4,6 @@
     <title></title>
 </head>
 <body>
-    Oops! Page not found!
+Oops! Page not found!
 </body>
 </html>

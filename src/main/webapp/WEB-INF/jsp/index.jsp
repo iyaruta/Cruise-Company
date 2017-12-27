@@ -33,6 +33,7 @@
 
 <div class="container">
     <h1>Cruise</h1>
+    <a href="/ship" class="btn btn-success">Ships</a>
 </div>
 
 </body>
