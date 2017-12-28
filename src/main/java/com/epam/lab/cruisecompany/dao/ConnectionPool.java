@@ -18,6 +18,7 @@ public class ConnectionPool {
     private static final String JDBC_CONFIG = "/jdbc.properties";
     private static final Logger LOG = LoggerFactory.getLogger(ConnectionPool.class);
     private static HikariDataSource dataSource;
+    private static boolean testMode;
 
     static {
         HikariConfig cfg = new HikariConfig(JDBC_CONFIG);
@@ -26,28 +27,18 @@ public class ConnectionPool {
 
     public static Connection getConnection() {
         try {
-            return dataSource.getConnection();
+            Connection connection = dataSource.getConnection();
+            if (testMode) {
+                connection.setAutoCommit(false);
+            }
+            return connection;
         } catch (SQLException e) {
             LOG.error("Get connection failed", e);
             return null;
         }
     }
 
-    public static <T> List<T> findAll(String sql, Function<ResultSet, T> function) {
-        List<T> result = new ArrayList<>();
-        try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement(sql);
-             ResultSet resultSet = statement.executeQuery()) {
-            while (resultSet.next()) {
-                T type = function.apply(resultSet);
-                result.add(type);
-            }
-        } catch (Exception e) {
-            LOG.error("SQL error", e);
-        }
-
-        return result;
+    static void setTestMode(boolean testMode) {
+        ConnectionPool.testMode = testMode;
     }
-
-
 }

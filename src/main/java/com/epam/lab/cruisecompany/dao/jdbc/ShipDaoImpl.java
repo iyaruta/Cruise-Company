@@ -34,6 +34,7 @@ public class ShipDaoImpl implements ShipDao {
             }
         } catch (Exception e) {
             LOG.error("SQL error", e);
+            throw new IllegalStateException("SQL error", e);
         }
         return ships;
     }
@@ -55,6 +56,7 @@ public class ShipDaoImpl implements ShipDao {
 
         } catch (Exception e) {
             LOG.error("SQL error", e);
+            throw new IllegalStateException("SQL error", e);
         }
         return ship;
     }
@@ -70,18 +72,35 @@ public class ShipDaoImpl implements ShipDao {
 
         } catch (Exception e) {
             LOG.error("SQL error", e);
+            throw new IllegalStateException("SQL error", e);
         }
-
     }
 
     @Override
     public void update(Ship ship) {
-
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement("UPDATE SHIP SET name = ?, passengers = ?, crew = ? WHERE id = ?")) {
+            statement.setString(1, ship.getName());
+            statement.setInt(2, ship.getPassengers());
+            statement.setInt(3, ship.getCrew());
+            statement.setLong(4, ship.getId());
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOG.error("SQL error", e);
+            throw new IllegalStateException("SQL error", e);
+        }
     }
 
     @Override
     public void delete(Long shipId) {
-
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM SHIP WHERE id = ?")) {
+            statement.setLong(1, shipId);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            LOG.error("SQL error", e);
+            throw new IllegalStateException("SQL error", e);
+        }
     }
 
     private PreparedStatement statement(Connection connection, Long shipId) throws SQLException {

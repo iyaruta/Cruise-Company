@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ExcursionDao {
 
-    List<Excursion> findAll();
+    List<Excursion> findByPort(Long portId);
 
     Excursion get(Long excursionId);
 

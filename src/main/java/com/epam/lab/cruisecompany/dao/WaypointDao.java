@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface WaypointDao {
 
-    List<Waypoint> findAll();
+    List<Waypoint> findByCruise(Long cruiseId);
 
     Waypoint get(Long waypointId);
 
