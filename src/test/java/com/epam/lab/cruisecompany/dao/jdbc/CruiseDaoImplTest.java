@@ -37,14 +37,24 @@ public class CruiseDaoImplTest {
 
     @Test
     public void save() throws Exception {
+        Cruise cruise = new Cruise();
+        cruise.setShipId(2L);
+        cruise.setName("Faraway island");
+        cruiseDao.save(cruise);
     }
 
     @Test
     public void update() throws Exception {
+        Cruise cruise = new Cruise();
+        cruise.setId(1L);
+        cruise.setShipId(2L);
+        cruise.setName("Near island");
+        cruiseDao.update(cruise);
     }
 
     @Test
     public void delete() throws Exception {
+        cruiseDao.delete(Long.MAX_VALUE);
     }
 
 }

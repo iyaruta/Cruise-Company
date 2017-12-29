@@ -17,7 +17,7 @@ import java.util.List;
 public class ExcursionDaoImpl implements ExcursionDao {
 
     private static final Logger LOG = LoggerFactory.getLogger(IndexServlet.class);
-    private static final String SQL = "INSERT INTO EXCURSION (port_id = ?, name = ?, details = ?) VALUES (?, ?, ?)";
+    private static final String SQL = "INSERT INTO EXCURSION (port_id, name, details) VALUES (?, ?, ?)";
     private static final String UPDATE = "UPDATE EXCURSION SET port_id = ?, name = ?, details = ? WHERE id = ?";
 
     @Override
@@ -80,7 +80,6 @@ public class ExcursionDaoImpl implements ExcursionDao {
             statement.setString(3, excursion.getDetails());
             statement.setLong(4, excursion.getId());
             statement.executeUpdate();
-
         } catch (Exception e) {
             LOG.error("SQL error", e);
             throw new IllegalStateException("SQL error", e);
@@ -90,7 +89,7 @@ public class ExcursionDaoImpl implements ExcursionDao {
     @Override
     public void delete(Long excursionId) {
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement("DELETE EXCURSION FROM id = ?")) {
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM EXCURSION WHERE id = ?")) {
             statement.setLong(1, excursionId);
             statement.executeUpdate();
         } catch (Exception e) {

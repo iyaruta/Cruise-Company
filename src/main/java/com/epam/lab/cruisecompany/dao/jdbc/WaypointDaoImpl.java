@@ -7,18 +7,15 @@ import com.epam.lab.cruisecompany.servlet.IndexServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class WaypointDaoImpl implements WaypointDao {
 
     private static final Logger LOG = LoggerFactory.getLogger(IndexServlet.class);
-    public static final String SQL = "INSERT INTO WAYPOINT(port_id = ?, cruise_id = ?) VALUES (?, ?)";
-    public static final String UPDATE = "UPDATE WAYPOINT SET port_id = ?, cruise_id WHERE id = ?";
+    public static final String SQL = "INSERT INTO WAYPOINT(port_id, cruise_id, arrival, departure) VALUES (?, ?, ?, ?)";
+    public static final String UPDATE = "UPDATE WAYPOINT SET port_id = ?, cruise_id = ?, arrival = ?, departure = ? WHERE id = ?";
 
     @Override
     public List<Waypoint> findByCruise(Long cruiseId) {
@@ -62,8 +59,9 @@ public class WaypointDaoImpl implements WaypointDao {
              PreparedStatement statement = connection.prepareStatement(SQL)) {
             statement.setLong(1, waypoint.getPortId());
             statement.setLong(2, waypoint.getCruiseId());
-//            statement.setDate(3, waypoint.getArrival());
-//              statement.setString(4, waypoint.getDeparture());
+            statement.setTimestamp(3, Timestamp.valueOf(waypoint.getArrival()));
+            statement.setTimestamp(4, Timestamp.valueOf(waypoint.getDeparture()));
+            statement.executeUpdate();
         } catch (Exception e) {
             LOG.error("SQL error", e);
             throw new IllegalStateException("SQL error", e);
@@ -77,8 +75,10 @@ public class WaypointDaoImpl implements WaypointDao {
              PreparedStatement statement = connection.prepareStatement(UPDATE)) {
             statement.setLong(1, waypoint.getPortId());
             statement.setLong(2, waypoint.getCruiseId());
-//            statement.setDate(3, waypoint.getArrival());
-//            statement.setDate(4, waypoint.getDeparture());
+            statement.setTimestamp(3, Timestamp.valueOf(waypoint.getArrival()));
+            statement.setTimestamp(4, Timestamp.valueOf(waypoint.getDeparture()));
+            statement.setLong(5, waypoint.getId());
+            statement.executeUpdate();
         } catch (Exception e) {
             LOG.error("SQL error", e);
             throw new IllegalStateException("SQL error", e);

@@ -40,14 +40,27 @@ public class ExcursionDaoImplTest {
 
     @Test
     public void save() throws Exception {
+        Excursion excursion = new Excursion();
+        excursion.setPortId(1L);
+        excursion.setName("Young Rotterdam");
+        excursion.setDetails("Downtown overview");
+        excursionDao.save(excursion);
     }
 
     @Test
     public void update() throws Exception {
+        Excursion excursion = new Excursion();
+        excursion.setId(2L);
+        excursion.setPortId(1L);
+        excursion.setName("Museum Rotterdam");
+        excursion.setDetails("Old City");
+        excursionDao.update(excursion);
+
     }
 
     @Test
     public void delete() throws Exception {
+        excursionDao.delete(Long.MAX_VALUE);
     }
 
 }

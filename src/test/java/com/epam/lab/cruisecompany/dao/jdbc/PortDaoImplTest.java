@@ -37,14 +37,22 @@ public class PortDaoImplTest {
 
     @Test
     public void save() throws Exception {
+        Port port = new Port();
+        port.setName("Rotterdam");
+        portDao.save(port);
     }
 
     @Test
     public void update() throws Exception {
+        Port port = new Port();
+        port.setId(1L);
+        port.setName("Rotterdam");
+        portDao.update(port);
     }
 
     @Test
     public void delete() throws Exception {
+        portDao.delete(Long.MAX_VALUE);
     }
 
 }

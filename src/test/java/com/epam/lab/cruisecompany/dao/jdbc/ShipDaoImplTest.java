@@ -48,10 +48,16 @@ public class ShipDaoImplTest {
 
     @Test
     public void update() throws Exception {
+        Ship ship = new Ship();
+        ship.setId(1L);
+        ship.setName("Titanic");
+        ship.setPassengers(1500);
+        ship.setCrew(200);
+        shipDao.update(ship);
     }
 
     @Test
     public void delete() throws Exception {
+        shipDao.delete(Long.MAX_VALUE);
     }
-
 }

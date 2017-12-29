@@ -58,9 +58,9 @@ public class CruiseDaoImpl implements CruiseDao {
     @Override
     public void save(Cruise cruise) {
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO CUISE ship_id = ? WHERE id = ?")) {
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO CRUISE (ship_id, name) VALUES (?, ?)")) {
             statement.setLong(1, cruise.getShipId());
-            statement.setLong(2, cruise.getId());
+            statement.setString(2, cruise.getName());
             statement.executeUpdate();
         } catch (Exception e) {
             LOG.error("SQL error", e);
@@ -71,9 +71,10 @@ public class CruiseDaoImpl implements CruiseDao {
     @Override
     public void update(Cruise cruise) {
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement("UPDATE CRUISE SET ship_id = ? WHERE id = ?")) {
+             PreparedStatement statement = connection.prepareStatement("UPDATE CRUISE SET ship_id = ?, name = ? WHERE id = ?")) {
             statement.setLong(1, cruise.getShipId());
-            statement.setLong(2, cruise.getId());
+            statement.setString(2, cruise.getName());
+            statement.setLong(3, cruise.getId());
             statement.executeUpdate();
         } catch (Exception e) {
             LOG.error("SQL error", e);
@@ -104,6 +105,7 @@ public class CruiseDaoImpl implements CruiseDao {
         Cruise cruise = new Cruise();
         cruise.setId(resultSet.getLong("id"));
         cruise.setShipId(resultSet.getLong("ship_id"));
+        cruise.setName(resultSet.getString("name"));
         return cruise;
     }
 }

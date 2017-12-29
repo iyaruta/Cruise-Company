@@ -4,6 +4,7 @@ public class Cruise {
 
     private Long id;
     private Long shipId;
+    private String name;
 
     public Long getId() {
         return id;
@@ -19,5 +20,13 @@ public class Cruise {
 
     public void setShipId(Long shipId) {
         this.shipId = shipId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

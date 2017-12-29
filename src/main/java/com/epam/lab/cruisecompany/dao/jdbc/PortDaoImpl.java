@@ -56,9 +56,9 @@ public class PortDaoImpl implements PortDao {
     @Override
     public void save(Port port) {
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO PORT(id, name) VALUES (?, ?)")) {
-            statement.setLong(1, port.getId());
-            statement.setString(2, port.getName());
+             PreparedStatement statement = connection.prepareStatement("INSERT INTO PORT(name) VALUES (?)")) {
+            statement.setString(1, port.getName());
+            statement.executeUpdate();
         } catch (Exception e) {
             LOG.error("SQL error", e);
             throw new IllegalStateException("SQL error", e);
@@ -71,6 +71,7 @@ public class PortDaoImpl implements PortDao {
              PreparedStatement statement = connection.prepareStatement("UPDATE PORT SET name = ?  WHERE id = ?")) {
             statement.setString(1, port.getName());
             statement.setLong(2, port.getId());
+            statement.executeUpdate();
         } catch (Exception e) {
             LOG.error("SQL error", e);
             throw new IllegalStateException("SQL error", e);
@@ -82,7 +83,7 @@ public class PortDaoImpl implements PortDao {
     @Override
     public void delete(Long portId) {
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement("DELETE PORT WHERE id = ?")) {
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM PORT WHERE id = ?")) {
             statement.setLong(1, portId);
             statement.executeUpdate();
         } catch (Exception e) {
