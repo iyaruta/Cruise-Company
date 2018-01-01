@@ -76,8 +76,6 @@ public class PortDaoImpl implements PortDao {
             LOG.error("SQL error", e);
             throw new IllegalStateException("SQL error", e);
         }
-
-
     }
 
     @Override
@@ -96,7 +94,6 @@ public class PortDaoImpl implements PortDao {
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM PORT WHERE id = ?");
         statement.setLong(1, cruisId);
         return statement;
-
     }
 
     private Port getPort(ResultSet resultSet) throws SQLException {

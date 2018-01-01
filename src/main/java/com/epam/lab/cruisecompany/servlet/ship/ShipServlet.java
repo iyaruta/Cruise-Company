@@ -1,4 +1,4 @@
-package com.epam.lab.cruisecompany.servlet;
+package com.epam.lab.cruisecompany.servlet.ship;
 
 import com.epam.lab.cruisecompany.dao.ShipDao;
 import com.epam.lab.cruisecompany.dao.jdbc.ShipDaoImpl;
@@ -24,7 +24,7 @@ public class ShipServlet extends HttpServlet {
         List<Ship> ships = shipDao.findAll();
 
         req.setAttribute("ships", ships);
-        RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/WEB-INF/jsp/ship.jsp");
+        RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/WEB-INF/jsp/ship/ship.jsp");
         requestDispatcher.forward(req, resp);
     }
 }

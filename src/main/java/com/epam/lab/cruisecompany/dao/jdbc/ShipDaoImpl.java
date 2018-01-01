@@ -30,6 +30,8 @@ public class ShipDaoImpl implements ShipDao {
                 Ship ship = new Ship();
                 ship.setId(resultSet.getLong("id"));
                 ship.setName(resultSet.getString("name"));
+                ship.setPassengers(resultSet.getInt("passengers"));
+                ship.setCrew(resultSet.getInt("crew"));
                 ships.add(ship);
             }
         } catch (Exception e) {

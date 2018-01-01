@@ -31,8 +31,10 @@ public class CruiseDaoImplTest {
         Long cruiseId = 1L;
         Long shipId = 1L;
         Cruise cruise = cruiseDao.get(cruiseId);
+        assertNotNull(cruise);
         assertEquals(cruiseId, cruise.getId());
         assertEquals(shipId, cruise.getShipId());
+        assertEquals("Atlantic Dream", cruise.getName());
     }
 
     @Test

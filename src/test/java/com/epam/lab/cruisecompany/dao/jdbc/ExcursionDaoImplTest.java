@@ -32,6 +32,7 @@ public class ExcursionDaoImplTest {
         Long excursionId = 1L;
         Long portId = 1L;
         Excursion excursion = excursionDao.get(excursionId);
+        assertNotNull(excursion);
         assertEquals(excursionId, excursion.getId());
         assertEquals(portId, excursion.getPortId());
         assertEquals("Old Rotterdam", excursion.getName());
