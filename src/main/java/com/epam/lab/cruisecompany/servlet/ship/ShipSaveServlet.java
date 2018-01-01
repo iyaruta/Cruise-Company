@@ -3,6 +3,7 @@ package com.epam.lab.cruisecompany.servlet.ship;
 import com.epam.lab.cruisecompany.dao.ShipDao;
 import com.epam.lab.cruisecompany.dao.jdbc.ShipDaoImpl;
 import com.epam.lab.cruisecompany.data.Ship;
+import com.epam.lab.cruisecompany.util.WebUtil;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,9 +20,8 @@ public class ShipSaveServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String stringId = req.getParameter("id");
-        if (stringId != null) {
-            Long id = Long.valueOf(stringId);
+        Long id = WebUtil.id(req);
+        if (id != null) {
             Ship ship = shipDao.get(id);
             req.setAttribute("ship", ship);
         }
@@ -41,15 +41,13 @@ public class ShipSaveServlet extends HttpServlet {
         ship.setCrew(crew);
 
 
-        String stringId = req.getParameter("id");
-        if (stringId == null || stringId.length() == 0) {
+        Long id = WebUtil.id(req);
+        if (id == null) {
             shipDao.save(ship);
         } else {
-            Long id = Long.valueOf(stringId);
             ship.setId(id);
             shipDao.update(ship);
         }
-
         resp.sendRedirect("/ship");
     }
 }

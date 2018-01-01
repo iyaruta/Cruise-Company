@@ -2,6 +2,7 @@ package com.epam.lab.cruisecompany.servlet.ship;
 
 import com.epam.lab.cruisecompany.dao.ShipDao;
 import com.epam.lab.cruisecompany.dao.jdbc.ShipDaoImpl;
+import com.epam.lab.cruisecompany.util.WebUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,9 +18,8 @@ public class ShipDeleteServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String stringId = req.getParameter("id");
-        Long id = Long.valueOf(stringId);
-        shipDao.delete(id);
+        Long util = WebUtil.id(req);
+        shipDao.delete(util);
 
         resp.sendRedirect("/ship");
     }
