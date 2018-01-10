@@ -10,6 +10,8 @@ public class Waypoint {
     private LocalDateTime arrival;
     private LocalDateTime departure;
 
+    private Port port;
+
     public Long getId() {
         return id;
     }
@@ -48,5 +50,13 @@ public class Waypoint {
 
     public void setDeparture(LocalDateTime departure) {
         this.departure = departure;
+    }
+
+    public Port getPort() {
+        return port;
+    }
+
+    public void setPort(Port port) {
+        this.port = port;
     }
 }

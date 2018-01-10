@@ -25,6 +25,8 @@ public class WaypointDaoImplTest {
         List<Waypoint> waypoints = waypointDao.findByCruise(1L);
         assertNotNull(waypoints);
         assertTrue(waypoints.size() > 0);
+        boolean portExist = waypoints.stream().noneMatch(w -> w.getPort() == null);
+        assertTrue(portExist);
     }
 
     @Test

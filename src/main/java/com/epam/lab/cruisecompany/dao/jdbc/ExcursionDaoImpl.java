@@ -22,7 +22,6 @@ public class ExcursionDaoImpl implements ExcursionDao {
 
     @Override
     public List<Excursion> findByPort(Long portId) {
-        //TODO: fix query
         List<Excursion> excursions = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = statementByPort(connection, portId);

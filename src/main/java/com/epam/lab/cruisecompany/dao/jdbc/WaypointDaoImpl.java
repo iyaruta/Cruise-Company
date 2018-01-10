@@ -2,6 +2,7 @@ package com.epam.lab.cruisecompany.dao.jdbc;
 
 import com.epam.lab.cruisecompany.dao.ConnectionPool;
 import com.epam.lab.cruisecompany.dao.WaypointDao;
+import com.epam.lab.cruisecompany.data.Port;
 import com.epam.lab.cruisecompany.data.Waypoint;
 import com.epam.lab.cruisecompany.servlet.IndexServlet;
 import org.slf4j.Logger;
@@ -19,7 +20,6 @@ public class WaypointDaoImpl implements WaypointDao {
 
     @Override
     public List<Waypoint> findByCruise(Long cruiseId) {
-        //TODO: fix query
         List<Waypoint> waypoints = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = statementByCruise(connection, cruiseId);
@@ -27,6 +27,10 @@ public class WaypointDaoImpl implements WaypointDao {
 
             while (resultSet.next()) {
                 Waypoint waypoint = getWaypoint(resultSet);
+                Port port = new Port();
+                port.setId(waypoint.getPortId());
+                port.setName(resultSet.getString("name"));
+                waypoint.setPort(port);
                 waypoints.add(waypoint);
             }
         } catch (Exception e) {
@@ -106,7 +110,8 @@ public class WaypointDaoImpl implements WaypointDao {
     }
 
     private PreparedStatement statementByCruise(Connection connection, Long cruiseId) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM WAYPOINT WHERE cruise_id = ?");
+        PreparedStatement statement = connection.prepareStatement("SELECT w.*, p.name FROM WAYPOINT w " +
+                " INNER JOIN PORT p ON w.port_id  = p.id WHERE cruise_id = ?");
         statement.setLong(1, cruiseId);
         return statement;
     }
