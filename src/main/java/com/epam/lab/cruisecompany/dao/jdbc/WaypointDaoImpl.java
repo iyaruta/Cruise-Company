@@ -111,7 +111,7 @@ public class WaypointDaoImpl implements WaypointDao {
 
     private PreparedStatement statementByCruise(Connection connection, Long cruiseId) throws SQLException {
         PreparedStatement statement = connection.prepareStatement("SELECT w.*, p.name FROM WAYPOINT w " +
-                " INNER JOIN PORT p ON w.port_id  = p.id WHERE cruise_id = ?");
+                " INNER JOIN PORT p ON w.port_id  = p.id WHERE cruise_id = ? order by arrival");
         statement.setLong(1, cruiseId);
         return statement;
     }
@@ -121,8 +121,10 @@ public class WaypointDaoImpl implements WaypointDao {
         waypoint.setId(resultSet.getLong("id"));
         waypoint.setPortId(resultSet.getLong("port_id"));
         waypoint.setCruiseId(resultSet.getLong("cruise_id"));
-        waypoint.setArrival(resultSet.getTimestamp("arrival").toLocalDateTime());
-        waypoint.setDeparture(resultSet.getTimestamp("departure").toLocalDateTime());
+        Timestamp arrival = resultSet.getTimestamp("arrival");
+        waypoint.setArrival(arrival == null ? null : arrival.toLocalDateTime());
+        Timestamp departure = resultSet.getTimestamp("departure");
+        waypoint.setDeparture(departure == null ? null : departure.toLocalDateTime());
         return waypoint;
     }
 }
