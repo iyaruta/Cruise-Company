@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@include file="../include/header.jsp" %>
+
 <h1>Круизы</h1>
 <table class="table">
     <thead>
