@@ -7,6 +7,7 @@
     <tr>
         <th>Id</th>
         <th>Name</th>
+        <th>Ticket</th>
         <th>Passengers</th>
         <th>Crew</th>
         <th>Update ship</th>
@@ -18,6 +19,7 @@
         <tr>
             <td>${ship.id}</td>
             <td>${ship.name}</td>
+            <td><a href="/ticketClass?shipId=${ship.id}" class="active">Ticket</a></td>
             <td>${ship.passengers}</td>
             <td>${ship.crew}</td>
             <td><a href="/ship/save?id=${ship.id}" class="active">Изминить</a></td>

@@ -1,7 +1,34 @@
 <%@page contentType="text/html" pageEncoding="UTF-8" %>
 <%@include file="../include/header.jsp" %>
 <h1>Круиз - ${cruise.name}</h1>
+<td>${ship.name}</td>
 <table class="table">
+    <caption>Билеты</caption>
+    <thead>
+    <tr>
+        <th>TicketClass</th>
+        <th>Количестьво</th>
+        <th>Продано</th>
+        <th>Bonus</th>
+        <th>Buy</th>
+    </tr>
+    </thead>
+    <tbody>
+    <c:forEach items="${ticketClasses}" var="ticketClass">
+        <tr>
+            <td>${ticketClass.type}</td>
+            <td>${ticketClass.count}</td>
+            <td>***</td>
+            <td>${ticketClass.bonus}</td>
+            <td><a href="/ticketClass?id=${ticketClass.id}" class="active">Buy</a></td>
+        </tr>
+    </c:forEach>
+    </tbody>
+
+</table>
+<hr>
+<table class="table">
+    <caption>Маршрут</caption>
     <thead>
     <tr>
         <th>Id</th>
