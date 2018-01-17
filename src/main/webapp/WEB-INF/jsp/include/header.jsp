@@ -26,8 +26,21 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <form class="navbar-form navbar-right">
-                <a href="/login" class="btn btn-success">Вход</a>
-                <a href="/registration" class="btn btn-success">Регистрация</a>
+
+                <c:choose>
+                    <c:when test="${not empty sessionScope.user}">
+                        <div class="form-group">
+                            <a href="/"
+                               class="btn btn-success">Welcome, ${sessionScope.user.name}</a>
+                            <a href="/logout" class="btn btn-danger">Выход</a>
+
+                        </div>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="/login" class="btn btn-success">Вход</a>
+                        <a href="/registration" class="btn btn-success">Регистрация</a>
+                    </c:otherwise>
+                </c:choose>
             </form>
         </div>
     </div>

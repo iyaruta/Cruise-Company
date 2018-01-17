@@ -8,11 +8,7 @@ public interface TicketDao {
 
     List<Ticket> findByCruise(Long cruiseId);
 
-//    Ticket get(Long ticketId);
-
     void save(Ticket ticket);
-
-//    void update(Ticket ticket);
 
     void delete(Long ticketId);
 }

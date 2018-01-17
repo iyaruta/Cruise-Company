@@ -52,7 +52,7 @@ public class TicketDaoImpl implements TicketDao {
     @Override
     public void delete(Long ticketId) {
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement("DELETE FROM TICKET WHERE id =?")) {
+             PreparedStatement statement = connection.prepareStatement("DELETE FROM TICKET WHERE id = ?")) {
             statement.setLong(1, ticketId);
             statement.executeUpdate();
         } catch (Exception e) {
