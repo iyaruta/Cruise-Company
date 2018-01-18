@@ -2,10 +2,15 @@ package home.inna.cruisecompany.servlet.cruise;
 
 import home.inna.cruisecompany.dao.CruiseDao;
 import home.inna.cruisecompany.dao.ShipDao;
+import home.inna.cruisecompany.dao.TicketClassDao;
+import home.inna.cruisecompany.dao.TicketDao;
 import home.inna.cruisecompany.dao.jdbc.CruiseDaoImpl;
 import home.inna.cruisecompany.dao.jdbc.ShipDaoImpl;
+import home.inna.cruisecompany.dao.jdbc.TicketClassDaoImpl;
+import home.inna.cruisecompany.dao.jdbc.TicketDaoImpl;
 import home.inna.cruisecompany.data.Cruise;
 import home.inna.cruisecompany.data.Ship;
+import home.inna.cruisecompany.data.TicketClass;
 import home.inna.cruisecompany.util.WebUtil;
 
 import javax.servlet.RequestDispatcher;
@@ -22,6 +27,8 @@ public class CruiseSaveServlet extends HttpServlet {
 
     private CruiseDao cruiseDao = new CruiseDaoImpl();
     private ShipDao shipDao = new ShipDaoImpl();
+    private TicketClassDao ticketClassDao = new TicketClassDaoImpl();
+    private TicketDao ticketDao = new TicketDaoImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -47,7 +54,9 @@ public class CruiseSaveServlet extends HttpServlet {
 
         Long id = WebUtil.id(req);
         if (id == null) {
-            cruiseDao.save(cruise);
+            Long cruiseId = cruiseDao.save(cruise);
+            List<TicketClass> ticketClasses = ticketClassDao.findByShip(shipId);
+            ticketDao.save(cruiseId, ticketClasses);
         } else {
             cruise.setId(id);
             cruiseDao.update(cruise);

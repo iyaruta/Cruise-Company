@@ -23,6 +23,8 @@
             <a class="navbar-brand" href="/">Cruise Company</a>
             <a class="navbar-brand" href="/cruise">Круизы</a>
             <a class="navbar-brand" href="/ship">Корабли</a>
+            <a class="navbar-brand" href="/port">Порты</a>
+
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <form class="navbar-form navbar-right">

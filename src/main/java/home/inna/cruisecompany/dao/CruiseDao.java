@@ -10,7 +10,7 @@ public interface CruiseDao {
 
     Cruise get(Long cruiseId);
 
-    void save(Cruise cruise);
+    Long save(Cruise cruise);
 
     void update(Cruise cruise);
 

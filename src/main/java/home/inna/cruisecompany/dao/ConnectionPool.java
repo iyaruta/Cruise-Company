@@ -32,7 +32,6 @@ public class ConnectionPool {
             return null;
         }
     }
-
     static void setTestMode(boolean testMode) {
         ConnectionPool.testMode = testMode;
     }

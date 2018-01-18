@@ -20,12 +20,12 @@ public class TicketClassDaoImpl implements TicketClassDao {
     private static final String UPDATE = "UPDATE TICKET_CLASS SET count = ?, bonus = ?, type = ? WHERE id = ?";
     private static final String SQL = "INSERT INTO TICKET_CLASS(ship_id, count, bonus, type) VALUES (?, ?, ?, ?)";
 
-    public static final String FIND_BY_CRUISE = "SELECT tc.*, count(utt.ticket_id) as sold FROM TICKET_CLASS tc \n" +
-            "INNER JOIN Ticket t ON t.tecket_class_id = tc.id \n " +
+    public static final String FIND_BY_CRUISE = "SELECT tc.*, t.price, count(utt.ticket_id) as sold FROM TICKET_CLASS tc \n" +
+            "INNER JOIN Ticket t ON t.ticket_class_id = tc.id \n " +
             "INNER JOIN Cruise c ON t.cruise_id = c.id \n" +
             "LEFT JOIN USER_TO_TICKET utt ON t.id = utt.ticket_id \n" +
             "WHERE c.id = ? \n" +
-            "GROUP BY tc.id";
+            "GROUP BY tc.id, t.id";
 
     @Override
     public List<TicketClass> findByShip(Long shipId) {
@@ -136,6 +136,7 @@ public class TicketClassDaoImpl implements TicketClassDao {
         ticketClass.setType(resultSet.getString("type"));
         ticketClass.setCount(resultSet.getInt("count"));
         ticketClass.setBonus(resultSet.getString("bonus"));
+        ticketClass.setPrice(resultSet.getBigDecimal("price"));
         return ticketClass;
     }
 

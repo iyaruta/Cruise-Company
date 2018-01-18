@@ -10,6 +10,10 @@
         <th>Количестьво</th>
         <th>Продано</th>
         <th>Bonus</th>
+        <th>Цена</th>
+        <c:if test="${sessionScope.user.role eq 'ADMIN'}">
+            <th>Изменить цены</th>
+        </c:if>
         <th>Buy</th>
     </tr>
     </thead>
@@ -20,7 +24,18 @@
             <td>${ticketClass.count}</td>
             <td>***</td>
             <td>${ticketClass.bonus}</td>
-            <td><a href="/ticketClass?id=${ticketClass.id}" class="active">Buy</a></td>
+            <td>${ticketClass.price}</td>
+            <c:if test="${sessionScope.user.role eq 'ADMIN'}">
+                <td><a href="/admin/ticket/save?cruiseId=${cruise.id}&ticketClassId=${ticketClass.id}" class="active">Изменить
+                    цены</a></td>
+            </c:if>
+            <td>
+                <c:if test="${sessionScope.user.role eq 'USER'}">
+                    <c:if test="${not empty ticketClass.price}">
+                        <a href="/ticketClass?id=${ticketClass.id}" class="active">Buy</a>
+                    </c:if>
+                </c:if>
+            </td>
         </tr>
     </c:forEach>
     </tbody>

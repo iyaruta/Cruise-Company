@@ -7,10 +7,7 @@ import home.inna.cruisecompany.servlet.IndexServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,12 +53,12 @@ public class CruiseDaoImpl implements CruiseDao {
     }
 
     @Override
-    public void save(Cruise cruise) {
+    public Long save(Cruise cruise) {
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement("INSERT INTO CRUISE (ship_id, name) VALUES (?, ?)")) {
-            statement.setLong(1, cruise.getShipId());
-            statement.setString(2, cruise.getName());
-            statement.executeUpdate();
+             PreparedStatement statement = preparedStatement(connection, cruise)) {
+            ResultSet rs = statement.getGeneratedKeys();
+            rs.next();
+            return rs.getLong(1);
         } catch (Exception e) {
             LOG.error("SQL error", e);
             throw new IllegalStateException("SQL error", e);
@@ -107,5 +104,13 @@ public class CruiseDaoImpl implements CruiseDao {
         cruise.setShipId(resultSet.getLong("ship_id"));
         cruise.setName(resultSet.getString("name"));
         return cruise;
+    }
+
+    private PreparedStatement preparedStatement(Connection connection, Cruise cruise) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO CRUISE (ship_id, name) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
+        statement.setLong(1, cruise.getShipId());
+        statement.setString(2, cruise.getName());
+        statement.executeUpdate();
+        return statement;
     }
 }

@@ -1,13 +1,7 @@
 package home.inna.cruisecompany.servlet.cruise;
 
-import home.inna.cruisecompany.dao.CruiseDao;
-import home.inna.cruisecompany.dao.ShipDao;
-import home.inna.cruisecompany.dao.TicketClassDao;
-import home.inna.cruisecompany.dao.WaypointDao;
-import home.inna.cruisecompany.dao.jdbc.CruiseDaoImpl;
-import home.inna.cruisecompany.dao.jdbc.ShipDaoImpl;
-import home.inna.cruisecompany.dao.jdbc.TicketClassDaoImpl;
-import home.inna.cruisecompany.dao.jdbc.WaypointDaoImpl;
+import home.inna.cruisecompany.dao.*;
+import home.inna.cruisecompany.dao.jdbc.*;
 import home.inna.cruisecompany.data.Cruise;
 import home.inna.cruisecompany.data.Ship;
 import home.inna.cruisecompany.data.TicketClass;
@@ -30,6 +24,7 @@ public class CruiseDetailsServlet extends HttpServlet {
     private CruiseDao cruiseDao = new CruiseDaoImpl();
     private TicketClassDao ticketClassDao = new TicketClassDaoImpl();
     private ShipDao shipDao = new ShipDaoImpl();
+    private TicketDao ticketDao = new TicketDaoImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

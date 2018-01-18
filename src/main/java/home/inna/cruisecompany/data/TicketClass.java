@@ -1,5 +1,7 @@
 package home.inna.cruisecompany.data;
 
+import java.math.BigDecimal;
+
 public class TicketClass {
 
     private Long id;
@@ -7,6 +9,8 @@ public class TicketClass {
     private String type;
     private int count;
     private String bonus;
+
+    private BigDecimal price;
 
     public Long getId() {
         return id;
@@ -46,5 +50,13 @@ public class TicketClass {
 
     public void setBonus(String bonus) {
         this.bonus = bonus;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 }

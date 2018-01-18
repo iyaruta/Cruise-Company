@@ -59,7 +59,7 @@ create table Ticket
 (
 	id bigint auto_increment primary key,
 	cruise_id bigint not null,
-	tecket_class_id bigint not null,
+	ticket_class_id bigint not null,
 	constraint Ticket_Cruise_id_fk
 	foreign key (cruise_id) references Cruise (id)
 );
@@ -68,7 +68,7 @@ create index Ticket_Cruise_id_fk
 	on Ticket (cruise_id);
 
 create index Ticket_Ticket_Class_id_fk
-	on Ticket (tecket_class_id);
+	on Ticket (ticket_class_id);
 
 create table Ticket_Class
 (
@@ -86,7 +86,7 @@ create index Ticket_Class_Ship_id_fk
 
 alter table Ticket
 	add constraint Ticket_Ticket_Class_id_fk
-	foreign key (tecket_class_id) references Ticket_Class (id);
+	foreign key (ticket_class_id) references Ticket_Class (id);
 
 create table User
 (
