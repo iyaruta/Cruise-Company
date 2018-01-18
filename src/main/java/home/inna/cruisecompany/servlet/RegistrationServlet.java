@@ -35,7 +35,6 @@ public class RegistrationServlet extends HttpServlet {
         user.setRole(Role.USER);
 
         userDao.save(user);
-        RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/WEB-INF/jsp/cruise/cruise.jsp");
-        requestDispatcher.forward(req, resp);
+        resp.sendRedirect("/login");
     }
 }

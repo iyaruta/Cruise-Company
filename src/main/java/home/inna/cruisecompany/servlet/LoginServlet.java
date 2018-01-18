@@ -32,7 +32,6 @@ public class LoginServlet extends HttpServlet {
 
         User user = userDao.getByName(name);
         if (user == null || !Objects.equals(user.getPassword(), password)) {
-            req.setAttribute("user", user);
             req.setAttribute("error_login", true);
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/WEB-INF/jsp/login.jsp");
             requestDispatcher.forward(req, resp);

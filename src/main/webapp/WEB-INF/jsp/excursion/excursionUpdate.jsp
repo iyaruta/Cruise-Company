@@ -3,7 +3,7 @@
 <%@include file="../include/header.jsp" %>
 
 <h1>Добавить/изменить точку</h1>
-<form class="" action="/excursion/save" method="post">
+<form class="" action="/admin/excursion/save" method="post">
     <c:if test="${not empty excursion.id}">
         <input type="hidden" name="id" value="${excursion.id}">
     </c:if>

@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/ticketClass")
+@WebServlet("/admin/ticketClass")
 public class TicketClassServlet extends HttpServlet {
 
     private TicketClassDao ticketClassDao = new TicketClassDaoImpl();

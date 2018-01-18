@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/port/delete")
+@WebServlet("/admin/port/delete")
 public class PortDeleteServlet extends HttpServlet {
 
     private PortDao portDao = new PortDaoImpl();

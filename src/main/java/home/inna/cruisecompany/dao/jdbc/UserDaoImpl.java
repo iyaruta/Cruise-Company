@@ -57,7 +57,7 @@ public class UserDaoImpl implements UserDao {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL)) {
             statement.setString(1, user.getName());
-            statement.setLong(2, user.getRole().ordinal());
+            statement.setLong(2, user.getRole().ordinal() + 1);
             statement.setString(3, user.getPassword());
             statement.executeUpdate();
         } catch (Exception e) {

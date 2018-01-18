@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/ticketClass/delete")
+@WebServlet("/admin/ticketClass/delete")
 public class TicketClassDeleteServlet extends HttpServlet {
 
     private TicketClassDao ticketClassDao = new TicketClassDaoImpl();
@@ -23,6 +23,6 @@ public class TicketClassDeleteServlet extends HttpServlet {
         TicketClass ticketClass = ticketClassDao.get(util);
         Long shipId = ticketClass.getShipId();
         ticketClassDao.delete(util);
-        resp.sendRedirect("/ticketClass?shipId=" + shipId);
+        resp.sendRedirect("/admin/ticketClass?shipId=" + shipId);
     }
 }

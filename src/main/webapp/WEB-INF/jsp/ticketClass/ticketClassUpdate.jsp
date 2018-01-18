@@ -3,7 +3,7 @@
 <%@include file="../include/header.jsp" %>
 
 <h1>Добавить/изменить Билета</h1>
-<form class="" action="/ticketClass/save" method="post">
+<form class="" action="/admin/ticketClass/save" method="post">
     <c:if test="${not empty ticketClass.id}">
         <input type="hidden" name="id" value="${ticketClass.id}">
     </c:if>

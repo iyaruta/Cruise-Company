@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/excursion/delete")
+@WebServlet("/admin/excursion/delete")
 public class ExcursionDeleteServlet extends HttpServlet {
 
     private ExcursionDao excursionDao = new ExcursionDaoImpl();

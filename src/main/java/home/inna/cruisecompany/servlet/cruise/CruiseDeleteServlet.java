@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/cruise/delete")
+@WebServlet("/admin/cruise/delete")
 public class CruiseDeleteServlet extends HttpServlet {
 
     private CruiseDao cruiseDao = new CruiseDaoImpl();

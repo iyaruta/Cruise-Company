@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/cruise/save")
+@WebServlet("/admin/cruise/save")
 public class CruiseSaveServlet extends HttpServlet {
 
     private CruiseDao cruiseDao = new CruiseDaoImpl();

@@ -3,7 +3,7 @@
 <%@include file="../include/header.jsp" %>
 
 <h1>Добавить/изменить порт</h1>
-<form class="" action="/port/save" method="post">
+<form class="" action="/admin/port/save" method="post">
     <c:if test="${not empty port.id}">
         <input type="hidden" name="id" value="${port.id}">
     </c:if>

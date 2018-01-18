@@ -3,7 +3,7 @@
 <%@include file="../include/header.jsp" %>
 
 <h1>Добавить/изменить точку</h1>
-<form class="" action="/waypoint/save" method="post">
+<form class="" action="/admin/waypoint/save" method="post">
     <input type="hidden" name="cruiseId" value="${cruiseId}">
     <c:if test="${not empty waypoint.id}">
         <input type="hidden" name="id" value="${waypoint.id}">

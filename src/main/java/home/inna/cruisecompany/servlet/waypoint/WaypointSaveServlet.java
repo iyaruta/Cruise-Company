@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@WebServlet("/waypoint/save")
+@WebServlet("/admin/waypoint/save")
 public class WaypointSaveServlet extends HttpServlet {
 
     private WaypointDao waypointDao = new WaypointDaoImpl();

@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/ticketClass/save")
+@WebServlet("/admin/ticketClass/save")
 public class TicketClassSaveServlet extends HttpServlet {
 
     private TicketClassDao ticketClassDao = new TicketClassDaoImpl();

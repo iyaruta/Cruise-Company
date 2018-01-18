@@ -9,8 +9,10 @@
         <th>Type</th>
         <th>Count</th>
         <th>Bonus</th>
-        <th>Update ship</th>
-        <th>Delete ship</th>
+        <c:if test="${sessionScope.user.role eq 'ADMIN'}">
+            <th>Update ship</th>
+            <th>Delete ship</th>
+        </c:if>
     </tr>
     </thead>
     <tbody>
@@ -20,12 +22,17 @@
             <td>${ticketClass.type}</td>
             <td>${ticketClass.count}</td>
             <td>${ticketClass.bonus}</td>
-            <td><a href="/ticketClass/save?id=${ticketClass.id}&shipId=${shipId}" class="active">Изминить</a></td>
-            <td><a href="/ticketClass/delete?id=${ticketClass.id}" class="active">Удалить</a></td>
+            <c:if test="${sessionScope.user.role eq 'ADMIN'}">
+                <td><a href="/admin/ticketClass/save?id=${ticketClass.id}&shipId=${shipId}" class="active">Изминить</a>
+                </td>
+                <td><a href="/admin/ticketClass/delete?id=${ticketClass.id}" class="active">Удалить</a></td>
+            </c:if>
         </tr>
     </c:forEach>
     </tbody>
 </table>
-<a href="/ticketClass/save?shipId=${shipId}" class="btn btn-success">Add new</a>
+<c:if test="${sessionScope.user.role eq 'ADMIN'}">
+    <a href="/admin/ticketClass/save?shipId=${shipId}" class="btn btn-success">Add new</a>
+</c:if>
 
 <%@include file="../include/footer.jsp" %>

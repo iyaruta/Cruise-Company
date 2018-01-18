@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/excursion/save")
+@WebServlet("/adminexcursion/save")
 public class ExcursionSaveServlet extends HttpServlet {
 
     private ExcursionDao excursionDao = new ExcursionDaoImpl();

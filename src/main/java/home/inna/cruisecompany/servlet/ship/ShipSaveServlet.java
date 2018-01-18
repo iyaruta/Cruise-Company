@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/ship/save")
+@WebServlet("/admin/ship/save")
 public class ShipSaveServlet extends HttpServlet {
 
     private ShipDao shipDao = new ShipDaoImpl();

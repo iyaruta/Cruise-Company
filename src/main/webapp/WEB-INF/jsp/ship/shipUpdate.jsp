@@ -3,7 +3,7 @@
 <%@include file="../include/header.jsp" %>
 
 <h1>Добавить/изменить корабль</h1>
-<form class="" action="/ship/save" method="post">
+<form class="" action="/admin/ship/save" method="post">
     <c:if test="${not empty ship.id}">
         <input type="hidden" name="id" value="${ship.id}">
     </c:if>

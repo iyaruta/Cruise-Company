@@ -7,8 +7,10 @@
     <tr>
         <th>Id</th>
         <th>Name</th>
-        <th>Update cruise</th>
-        <th>Delete cruise</th>
+        <c:if test="${sessionScope.user.role eq 'ADMIN'}">
+            <th>Update cruise</th>
+            <th>Delete cruise</th>
+        </c:if>
     </tr>
     </thead>
     <tbody>
@@ -16,12 +18,16 @@
         <tr>
             <td>${cruise.id}</td>
             <td><a href="/cruise/details?id=${cruise.id}" class="active">${cruise.name}</a></td>
-            <td><a href="/cruise/save?id=${cruise.id}" class="active">Изминить</a></td>
-            <td><a href="/cruise/delete?id=${cruise.id}" class="active">Удалить</a></td>
+            <c:if test="${sessionScope.user.role eq 'ADMIN'}">
+                <td><a href="/admin/cruise/save?id=${cruise.id}" class="active">Изминить</a></td>
+                <td><a href="/admin/cruise/delete?id=${cruise.id}" class="active">Удалить</a></td>
+            </c:if>
         </tr>
     </c:forEach>
     </tbody>
 </table>
-<a href="/cruise/save" class="btn btn-success">Add new</a>
+<c:if test="${sessionScope.user.role eq 'ADMIN'}">
+    <a href="/admin/cruise/save" class="btn btn-success">Add new</a>
+</c:if>
 
 <%@include file="../include/footer.jsp" %>
