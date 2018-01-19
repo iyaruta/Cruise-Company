@@ -3,7 +3,6 @@ package home.inna.cruisecompany.dao.jdbc;
 import home.inna.cruisecompany.dao.ConnectionPool;
 import home.inna.cruisecompany.dao.CruiseDao;
 import home.inna.cruisecompany.data.Cruise;
-import home.inna.cruisecompany.servlet.IndexServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,7 +12,7 @@ import java.util.List;
 
 public class CruiseDaoImpl implements CruiseDao {
 
-    private static final Logger LOG = LoggerFactory.getLogger(IndexServlet.class);
+    private static final Logger LOG = LoggerFactory.getLogger(CruiseDaoImpl.class);
 
     @Override
     public List<Cruise> findAll() {

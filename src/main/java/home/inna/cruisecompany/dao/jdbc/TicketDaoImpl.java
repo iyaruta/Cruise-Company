@@ -4,7 +4,6 @@ import home.inna.cruisecompany.dao.ConnectionPool;
 import home.inna.cruisecompany.dao.TicketDao;
 import home.inna.cruisecompany.data.Ticket;
 import home.inna.cruisecompany.data.TicketClass;
-import home.inna.cruisecompany.servlet.IndexServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +15,7 @@ import java.util.List;
 
 public class TicketDaoImpl implements TicketDao {
 
-    private static final Logger LOG = LoggerFactory.getLogger(IndexServlet.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TicketDaoImpl.class);
     private static final String SQL = "INSERT INTO TICKET(cruise_id, ticket_class_id) VALUES (?, ?)";
 
     @Override

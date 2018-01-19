@@ -3,7 +3,6 @@ package home.inna.cruisecompany.dao.jdbc;
 import home.inna.cruisecompany.dao.ConnectionPool;
 import home.inna.cruisecompany.dao.ShipDao;
 import home.inna.cruisecompany.data.Ship;
-import home.inna.cruisecompany.servlet.IndexServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,7 +15,7 @@ import java.util.List;
 
 public class ShipDaoImpl implements ShipDao {
 
-    private static final Logger LOG = LoggerFactory.getLogger(IndexServlet.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ShipDaoImpl.class);
     public static final String INSERT_SQL = "INSERT INTO SHIP(name, passengers, crew) VALUES (?, ?, ?)";
 
     @Override

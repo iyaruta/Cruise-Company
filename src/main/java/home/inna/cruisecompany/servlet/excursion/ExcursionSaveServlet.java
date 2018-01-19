@@ -12,8 +12,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.math.BigDecimal;
 
-@WebServlet("/adminexcursion/save")
+@WebServlet("/admin/excursion/save")
 public class ExcursionSaveServlet extends HttpServlet {
 
     private ExcursionDao excursionDao = new ExcursionDaoImpl();
@@ -25,6 +26,7 @@ public class ExcursionSaveServlet extends HttpServlet {
             Excursion excursion = excursionDao.get(id);
             req.setAttribute("excursion", excursion);
         }
+        req.setAttribute("portId", req.getParameter("portId"));
         RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/WEB-INF/jsp/excursion/excursionUpdate.jsp");
         requestDispatcher.forward(req, resp);
     }
@@ -33,12 +35,14 @@ public class ExcursionSaveServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         String details = req.getParameter("details");
+        BigDecimal price = new BigDecimal(req.getParameter("price"));
         Long portId = WebUtil.id(req, "portId");
 
         Excursion excursion = new Excursion();
         excursion.setName(name);
         excursion.setDetails(details);
         excursion.setPortId(portId);
+        excursion.setPrice(price);
 
         Long id = WebUtil.id(req);
         if (id == null) {
@@ -47,6 +51,6 @@ public class ExcursionSaveServlet extends HttpServlet {
             excursion.setId(id);
             excursionDao.update(excursion);
         }
-        resp.sendRedirect("/excursion");
+        resp.sendRedirect("/excursion?portId=" + portId);
     }
 }

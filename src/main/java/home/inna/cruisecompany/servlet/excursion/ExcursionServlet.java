@@ -23,6 +23,7 @@ public class ExcursionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long portId = WebUtil.id(req, "portId");
         List<Excursion> excursions = excursionDao.findByPort(portId);
+        req.setAttribute("portId", portId);
         req.setAttribute("excursions", excursions);
         RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/WEB-INF/jsp/excursion/excursion.jsp");
         requestDispatcher.forward(req, resp);

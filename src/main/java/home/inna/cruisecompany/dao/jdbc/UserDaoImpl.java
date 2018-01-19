@@ -4,7 +4,6 @@ import home.inna.cruisecompany.dao.ConnectionPool;
 import home.inna.cruisecompany.dao.UserDao;
 import home.inna.cruisecompany.data.Role;
 import home.inna.cruisecompany.data.User;
-import home.inna.cruisecompany.servlet.IndexServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,7 +14,7 @@ import java.sql.SQLException;
 
 public class UserDaoImpl implements UserDao {
 
-    private static final Logger LOG = LoggerFactory.getLogger(IndexServlet.class);
+    private static final Logger LOG = LoggerFactory.getLogger(UserDaoImpl.class);
     private static final String SQL = "INSERT INTO USER (name, role, password) VALUES (?, ?, ?)";
 
     @Override
@@ -80,6 +79,7 @@ public class UserDaoImpl implements UserDao {
 
     private User getUser(ResultSet resultSet) throws SQLException {
         User user = new User();
+        user.setId(resultSet.getLong("id"));
         user.setName(resultSet.getString("name"));
         user.setPassword(resultSet.getString("password"));
         int roleNum = resultSet.getInt("role");

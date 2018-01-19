@@ -3,7 +3,6 @@ package home.inna.cruisecompany.dao.jdbc;
 import home.inna.cruisecompany.dao.ConnectionPool;
 import home.inna.cruisecompany.dao.TicketClassDao;
 import home.inna.cruisecompany.data.TicketClass;
-import home.inna.cruisecompany.servlet.IndexServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,16 +15,9 @@ import java.util.List;
 
 public class TicketClassDaoImpl implements TicketClassDao {
 
-    private static final Logger LOG = LoggerFactory.getLogger(IndexServlet.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TicketClassDaoImpl.class);
     private static final String UPDATE = "UPDATE TICKET_CLASS SET count = ?, bonus = ?, type = ? WHERE id = ?";
     private static final String SQL = "INSERT INTO TICKET_CLASS(ship_id, count, bonus, type) VALUES (?, ?, ?, ?)";
-
-    public static final String FIND_BY_CRUISE = "SELECT tc.*, t.price, count(utt.ticket_id) as sold FROM TICKET_CLASS tc \n" +
-            "INNER JOIN Ticket t ON t.ticket_class_id = tc.id \n " +
-            "INNER JOIN Cruise c ON t.cruise_id = c.id \n" +
-            "LEFT JOIN USER_TO_TICKET utt ON t.id = utt.ticket_id \n" +
-            "WHERE c.id = ? \n" +
-            "GROUP BY tc.id, t.id";
 
     @Override
     public List<TicketClass> findByShip(Long shipId) {
@@ -44,25 +36,6 @@ public class TicketClassDaoImpl implements TicketClassDao {
         }
         return result;
     }
-
-    @Override
-    public List<TicketClass> findByCruise(Long cruiseId) {
-        List<TicketClass> result = new ArrayList<>();
-        try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement statement = statementByCruise(connection, cruiseId);
-             ResultSet resultSet = statement.executeQuery()) {
-
-            while (resultSet.next()) {
-                TicketClass ticketClass = getTicketClass(resultSet);
-                result.add(ticketClass);
-            }
-        } catch (Exception e) {
-            LOG.error("SQL error", e);
-            throw new IllegalStateException("SQL error", e);
-        }
-        return result;
-    }
-
 
     @Override
     public TicketClass get(Long id) {
@@ -136,19 +109,12 @@ public class TicketClassDaoImpl implements TicketClassDao {
         ticketClass.setType(resultSet.getString("type"));
         ticketClass.setCount(resultSet.getInt("count"));
         ticketClass.setBonus(resultSet.getString("bonus"));
-        ticketClass.setPrice(resultSet.getBigDecimal("price"));
         return ticketClass;
     }
 
     private PreparedStatement statementByShip(Connection connection, Long shipId) throws SQLException {
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM TICKET_CLASS WHERE ship_id = ?");
         statement.setLong(1, shipId);
-        return statement;
-    }
-
-    private PreparedStatement statementByCruise(Connection connection, Long cruiseId) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(FIND_BY_CRUISE);
-        statement.setLong(1, cruiseId);
         return statement;
     }
 }

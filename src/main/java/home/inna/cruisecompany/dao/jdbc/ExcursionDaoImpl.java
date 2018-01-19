@@ -3,7 +3,6 @@ package home.inna.cruisecompany.dao.jdbc;
 import home.inna.cruisecompany.dao.ConnectionPool;
 import home.inna.cruisecompany.dao.ExcursionDao;
 import home.inna.cruisecompany.data.Excursion;
-import home.inna.cruisecompany.servlet.IndexServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,9 +15,9 @@ import java.util.List;
 
 public class ExcursionDaoImpl implements ExcursionDao {
 
-    private static final Logger LOG = LoggerFactory.getLogger(IndexServlet.class);
-    private static final String SQL = "INSERT INTO EXCURSION (port_id, name, details) VALUES (?, ?, ?)";
-    private static final String UPDATE = "UPDATE EXCURSION SET port_id = ?, name = ?, details = ? WHERE id = ?";
+    private static final Logger LOG = LoggerFactory.getLogger(ExcursionDaoImpl.class);
+    private static final String SQL = "INSERT INTO EXCURSION (port_id, name, details, price) VALUES (?, ?, ?, ?)";
+    private static final String UPDATE = "UPDATE EXCURSION SET port_id = ?, name = ?, details = ?, price = ? WHERE id = ?";
 
     @Override
     public List<Excursion> findByPort(Long portId) {
@@ -63,6 +62,7 @@ public class ExcursionDaoImpl implements ExcursionDao {
             statement.setLong(1, excursion.getPortId());
             statement.setString(2, excursion.getName());
             statement.setString(3, excursion.getDetails());
+            statement.setBigDecimal(4, excursion.getPrice());
             statement.executeUpdate();
         } catch (Exception e) {
             LOG.error("SQL error", e);
@@ -77,7 +77,8 @@ public class ExcursionDaoImpl implements ExcursionDao {
             statement.setLong(1, excursion.getPortId());
             statement.setString(2, excursion.getName());
             statement.setString(3, excursion.getDetails());
-            statement.setLong(4, excursion.getId());
+            statement.setBigDecimal(4, excursion.getPrice());
+            statement.setLong(5, excursion.getId());
             statement.executeUpdate();
         } catch (Exception e) {
             LOG.error("SQL error", e);
@@ -115,6 +116,7 @@ public class ExcursionDaoImpl implements ExcursionDao {
         excursion.setPortId(resultSet.getLong("port_id"));
         excursion.setName(resultSet.getString("name"));
         excursion.setDetails(resultSet.getString("details"));
+        excursion.setPrice(resultSet.getBigDecimal("price"));
         return excursion;
     }
 }

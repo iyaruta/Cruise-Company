@@ -8,8 +8,6 @@ public interface TicketClassDao {
 
     List<TicketClass> findByShip(Long shipId);
 
-    List<TicketClass> findByCruise(Long cruiseId);
-
     TicketClass get(Long id);
 
     void save(TicketClass ticketClass);

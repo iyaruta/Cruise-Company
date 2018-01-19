@@ -1,10 +1,16 @@
 package home.inna.cruisecompany.servlet.cruise;
 
-import home.inna.cruisecompany.dao.*;
-import home.inna.cruisecompany.dao.jdbc.*;
+import home.inna.cruisecompany.dao.CruiseDao;
+import home.inna.cruisecompany.dao.CruiseTicketDao;
+import home.inna.cruisecompany.dao.ShipDao;
+import home.inna.cruisecompany.dao.WaypointDao;
+import home.inna.cruisecompany.dao.jdbc.CruiseDaoImpl;
+import home.inna.cruisecompany.dao.jdbc.CruiseTicketDaoImpl;
+import home.inna.cruisecompany.dao.jdbc.ShipDaoImpl;
+import home.inna.cruisecompany.dao.jdbc.WaypointDaoImpl;
 import home.inna.cruisecompany.data.Cruise;
+import home.inna.cruisecompany.data.CruiseTicket;
 import home.inna.cruisecompany.data.Ship;
-import home.inna.cruisecompany.data.TicketClass;
 import home.inna.cruisecompany.data.Waypoint;
 import home.inna.cruisecompany.util.WebUtil;
 
@@ -22,9 +28,8 @@ public class CruiseDetailsServlet extends HttpServlet {
 
     private WaypointDao waypointDao = new WaypointDaoImpl();
     private CruiseDao cruiseDao = new CruiseDaoImpl();
-    private TicketClassDao ticketClassDao = new TicketClassDaoImpl();
     private ShipDao shipDao = new ShipDaoImpl();
-    private TicketDao ticketDao = new TicketDaoImpl();
+    private CruiseTicketDao cruiseTicketDao = new CruiseTicketDaoImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -32,7 +37,7 @@ public class CruiseDetailsServlet extends HttpServlet {
 
         List<Waypoint> waypoints = waypointDao.findByCruise(id);
         Cruise cruise = cruiseDao.get(id);
-        List<TicketClass> ticketClasses = ticketClassDao.findByCruise(id);
+        List<CruiseTicket> ticketClasses = cruiseTicketDao.find(id);
         Ship ship = shipDao.get(cruise.getShipId());
         req.setAttribute("waypoints", waypoints);
         req.setAttribute("cruise", cruise);

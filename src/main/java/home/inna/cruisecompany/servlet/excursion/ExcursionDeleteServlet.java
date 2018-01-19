@@ -21,6 +21,6 @@ public class ExcursionDeleteServlet extends HttpServlet {
         Long id = WebUtil.id(req);
         excursionDao.delete(id);
 
-        resp.sendRedirect("/excurcion");
+        resp.sendRedirect("/excursion?portId=" + req.getParameter("portId"));
     }
 }

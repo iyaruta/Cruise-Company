@@ -4,7 +4,6 @@ import home.inna.cruisecompany.dao.ConnectionPool;
 import home.inna.cruisecompany.dao.WaypointDao;
 import home.inna.cruisecompany.data.Port;
 import home.inna.cruisecompany.data.Waypoint;
-import home.inna.cruisecompany.servlet.IndexServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +13,7 @@ import java.util.List;
 
 public class WaypointDaoImpl implements WaypointDao {
 
-    private static final Logger LOG = LoggerFactory.getLogger(IndexServlet.class);
+    private static final Logger LOG = LoggerFactory.getLogger(WaypointDaoImpl.class);
     public static final String SQL = "INSERT INTO WAYPOINT(port_id, cruise_id, arrival, departure) VALUES (?, ?, ?, ?)";
     public static final String UPDATE = "UPDATE WAYPOINT SET port_id = ?, cruise_id = ?, arrival = ?, departure = ? WHERE id = ?";
 

@@ -22,7 +22,7 @@
         <tr>
             <td>${ticketClass.type}</td>
             <td>${ticketClass.count}</td>
-            <td>***</td>
+            <td>${ticketClass.sold}</td>
             <td>${ticketClass.bonus}</td>
             <td>${ticketClass.price}</td>
             <c:if test="${sessionScope.user.role eq 'ADMIN'}">
@@ -32,7 +32,7 @@
             <td>
                 <c:if test="${sessionScope.user.role eq 'USER'}">
                     <c:if test="${not empty ticketClass.price}">
-                        <a href="/ticketClass?id=${ticketClass.id}" class="active">Buy</a>
+                        <a href="/buy?ticketId=${ticketClass.ticketId}&cruiseId=${cruise.id}" class="active">Buy</a>
                     </c:if>
                 </c:if>
             </td>
