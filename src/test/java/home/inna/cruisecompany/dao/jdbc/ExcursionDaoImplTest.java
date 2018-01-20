@@ -6,6 +6,7 @@ import home.inna.cruisecompany.data.Excursion;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -45,6 +46,7 @@ public class ExcursionDaoImplTest {
         excursion.setPortId(1L);
         excursion.setName("Young Rotterdam");
         excursion.setDetails("Downtown overview");
+        excursion.setPrice(BigDecimal.TEN);
         excursionDao.save(excursion);
     }
 

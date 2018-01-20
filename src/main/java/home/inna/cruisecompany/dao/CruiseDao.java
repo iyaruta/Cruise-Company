@@ -12,7 +12,7 @@ public interface CruiseDao {
 
     Cruise get(Long cruiseId);
 
-    Long save(Cruise cruise);
+    void save(Cruise cruise);
 
     void update(Cruise cruise);
 

@@ -50,6 +50,6 @@ public class TicketClassSaveServlet extends HttpServlet {
             ticketClass.setId(id);
             ticketClassDao.update(ticketClass);
         }
-        resp.sendRedirect("/ticketClass?shipId=" + shipId);
+        resp.sendRedirect("/admin/ticketClass?shipId=" + shipId);
     }
 }

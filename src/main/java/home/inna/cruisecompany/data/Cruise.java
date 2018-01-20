@@ -1,10 +1,14 @@
 package home.inna.cruisecompany.data;
 
+import java.util.List;
+
 public class Cruise {
 
     private Long id;
     private Long shipId;
     private String name;
+
+    private List<CruiseTicket> tickets;
 
     public Long getId() {
         return id;
@@ -28,5 +32,13 @@ public class Cruise {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public List<CruiseTicket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<CruiseTicket> tickets) {
+        this.tickets = tickets;
     }
 }

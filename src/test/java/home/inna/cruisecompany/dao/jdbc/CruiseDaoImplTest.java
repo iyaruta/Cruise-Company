@@ -6,6 +6,7 @@ import home.inna.cruisecompany.data.Cruise;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -42,6 +43,7 @@ public class CruiseDaoImplTest {
         Cruise cruise = new Cruise();
         cruise.setShipId(2L);
         cruise.setName("Faraway island");
+        cruise.setTickets(Collections.emptyList());
         cruiseDao.save(cruise);
     }
 

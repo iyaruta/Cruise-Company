@@ -3,6 +3,7 @@ package home.inna.cruisecompany.dao.jdbc;
 import home.inna.cruisecompany.dao.ConnectionPool;
 import home.inna.cruisecompany.dao.CruiseDao;
 import home.inna.cruisecompany.data.Cruise;
+import home.inna.cruisecompany.data.CruiseTicket;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,6 +18,8 @@ public class CruiseDaoImpl implements CruiseDao {
             "  INNER JOIN USER_TO_TICKET utt ON t.id = utt.ticket_id \n" +
             "  INNER JOIN Cruise c ON t.cruise_id = c.id \n" +
             "  WHERE utt.user_id = ?";
+
+    private static final String TICKET_SQL = "INSERT INTO TICKET(cruise_id, ticket_class_id) VALUES (?, ?)";
 
     @Override
     public List<Cruise> findAll() {
@@ -74,12 +77,13 @@ public class CruiseDaoImpl implements CruiseDao {
     }
 
     @Override
-    public Long save(Cruise cruise) {
-        try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement statement = preparedStatement(connection, cruise)) {
-            ResultSet rs = statement.getGeneratedKeys();
-            rs.next();
-            return rs.getLong(1);
+    public void save(Cruise cruise) {
+        try (Connection connection = ConnectionPool.getConnection(false);
+             PreparedStatement statement = saveCruise(connection, cruise);
+             ResultSet rs = statement.getGeneratedKeys();
+             PreparedStatement ticketStatement = saveTickets(connection, cruise, rs)) {
+
+            connection.commit();
         } catch (Exception e) {
             LOG.error("SQL error", e);
             throw new IllegalStateException("SQL error", e);
@@ -133,11 +137,25 @@ public class CruiseDaoImpl implements CruiseDao {
         return statement;
     }
 
-    private PreparedStatement preparedStatement(Connection connection, Cruise cruise) throws SQLException {
+    private PreparedStatement saveCruise(Connection connection, Cruise cruise) throws SQLException {
         PreparedStatement statement = connection.prepareStatement("INSERT INTO CRUISE (ship_id, name) VALUES (?, ?)", Statement.RETURN_GENERATED_KEYS);
         statement.setLong(1, cruise.getShipId());
         statement.setString(2, cruise.getName());
         statement.executeUpdate();
+        return statement;
+    }
+
+    private PreparedStatement saveTickets(Connection connection, Cruise cruise, ResultSet rs) throws SQLException {
+        rs.next();
+        long cruiseId = rs.getLong(1);
+
+        PreparedStatement statement = connection.prepareStatement(TICKET_SQL);
+        for (CruiseTicket ticket : cruise.getTickets()) {
+            statement.setLong(1, cruiseId);
+            statement.setLong(2, ticket.getId());
+            statement.addBatch();
+        }
+        statement.executeBatch();
         return statement;
     }
 }

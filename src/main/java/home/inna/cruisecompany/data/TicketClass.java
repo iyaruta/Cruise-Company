@@ -8,6 +8,17 @@ public class TicketClass {
     private int count;
     private String bonus;
 
+    public TicketClass() {
+    }
+
+    public TicketClass(TicketClass ticketClass) {
+        this.id = ticketClass.id;
+        this.shipId = ticketClass.shipId;
+        this.type = ticketClass.type;
+        this.count = ticketClass.count;
+        this.bonus = ticketClass.bonus;
+    }
+
     public Long getId() {
         return id;
     }

@@ -20,9 +20,10 @@ public class ConnectionPool {
         dataSource = new HikariDataSource(cfg);
     }
 
-    public static Connection getConnection() {
+    public static Connection getConnection(boolean autoCommit) {
         try {
             Connection connection = dataSource.getConnection();
+            connection.setAutoCommit(autoCommit);
             if (testMode) {
                 connection.setAutoCommit(false);
             }
@@ -32,6 +33,11 @@ public class ConnectionPool {
             return null;
         }
     }
+
+    public static Connection getConnection() {
+        return getConnection(true);
+    }
+
     static void setTestMode(boolean testMode) {
         ConnectionPool.testMode = testMode;
     }

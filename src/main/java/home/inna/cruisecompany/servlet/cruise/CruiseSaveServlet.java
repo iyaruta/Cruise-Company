@@ -1,16 +1,11 @@
 package home.inna.cruisecompany.servlet.cruise;
 
-import home.inna.cruisecompany.dao.CruiseDao;
 import home.inna.cruisecompany.dao.ShipDao;
-import home.inna.cruisecompany.dao.TicketClassDao;
-import home.inna.cruisecompany.dao.TicketDao;
-import home.inna.cruisecompany.dao.jdbc.CruiseDaoImpl;
 import home.inna.cruisecompany.dao.jdbc.ShipDaoImpl;
-import home.inna.cruisecompany.dao.jdbc.TicketClassDaoImpl;
-import home.inna.cruisecompany.dao.jdbc.TicketDaoImpl;
 import home.inna.cruisecompany.data.Cruise;
 import home.inna.cruisecompany.data.Ship;
-import home.inna.cruisecompany.data.TicketClass;
+import home.inna.cruisecompany.service.CruiseService;
+import home.inna.cruisecompany.service.impl.CruiseServiceImpl;
 import home.inna.cruisecompany.util.WebUtil;
 
 import javax.servlet.RequestDispatcher;
@@ -25,16 +20,15 @@ import java.util.List;
 @WebServlet("/admin/cruise/save")
 public class CruiseSaveServlet extends HttpServlet {
 
-    private CruiseDao cruiseDao = new CruiseDaoImpl();
+
+    private CruiseService cruiseService = new CruiseServiceImpl();
     private ShipDao shipDao = new ShipDaoImpl();
-    private TicketClassDao ticketClassDao = new TicketClassDaoImpl();
-    private TicketDao ticketDao = new TicketDaoImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long id = WebUtil.id(req);
         if (id != null) {
-            Cruise cruise = cruiseDao.get(id);
+            Cruise cruise = cruiseService.get(id);
             req.setAttribute("cruise", cruise);
         }
         List<Ship> ships = shipDao.findAll();
@@ -45,22 +39,16 @@ public class CruiseSaveServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String name = req.getParameter("name");
+        Long id = WebUtil.id(req);
         Long shipId = WebUtil.id(req, "shipId");
+        String name = req.getParameter("name");
 
         Cruise cruise = new Cruise();
+        cruise.setId(id);
         cruise.setName(name);
         cruise.setShipId(shipId);
 
-        Long id = WebUtil.id(req);
-        if (id == null) {
-            Long cruiseId = cruiseDao.save(cruise);
-            List<TicketClass> ticketClasses = ticketClassDao.findByShip(shipId);
-            ticketDao.save(cruiseId, ticketClasses);
-        } else {
-            cruise.setId(id);
-            cruiseDao.update(cruise);
-        }
+        cruiseService.saveOrUpdate(cruise);
         resp.sendRedirect("/cruise");
     }
 }

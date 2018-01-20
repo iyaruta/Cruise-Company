@@ -8,6 +8,13 @@ public class CruiseTicket extends TicketClass {
     private BigDecimal price;
     private int sold;
 
+    public CruiseTicket() {
+    }
+
+    public CruiseTicket(TicketClass ticketClass) {
+        super(ticketClass);
+    }
+
     public Long getTicketId() {
         return ticketId;
     }
