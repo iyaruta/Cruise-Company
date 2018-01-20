@@ -32,7 +32,7 @@
                 <c:choose>
                     <c:when test="${not empty sessionScope.user}">
                         <div class="form-group">
-                            <a href="/" class="btn btn-success">Welcome, ${sessionScope.user.name}</a>
+                            <a href="/privateOffice" class="btn btn-success">Welcome, ${sessionScope.user.name}</a>
                             <a href="/logout" class="btn btn-danger">Выход</a>
 
                         </div>

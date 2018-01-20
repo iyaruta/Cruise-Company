@@ -18,12 +18,32 @@ public class ExcursionDaoImpl implements ExcursionDao {
     private static final Logger LOG = LoggerFactory.getLogger(ExcursionDaoImpl.class);
     private static final String SQL = "INSERT INTO EXCURSION (port_id, name, details, price) VALUES (?, ?, ?, ?)";
     private static final String UPDATE = "UPDATE EXCURSION SET port_id = ?, name = ?, details = ?, price = ? WHERE id = ?";
+    private static final String FIND = "SELECT e.* FROM EXCURSION e \n" +
+            "  INNER JOIN Excursion_to_user etu ON e.id = etu.excursion_id \n" +
+            "  WHERE user_id = ?";
 
     @Override
     public List<Excursion> findByPort(Long portId) {
         List<Excursion> excursions = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = statementByPort(connection, portId);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                Excursion excursion = getExcursion(resultSet);
+                excursions.add(excursion);
+            }
+        } catch (Exception e) {
+            LOG.error("SQL error", e);
+            throw new IllegalStateException("SQL error", e);
+        }
+        return excursions;
+    }
+
+    public List<Excursion> excursionByUser(Long userId) {
+        List<Excursion> excursions = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement statement = statementByUser(connection, userId);
              ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
@@ -107,6 +127,12 @@ public class ExcursionDaoImpl implements ExcursionDao {
     private PreparedStatement statementByPort(Connection connection, Long portId) throws SQLException {
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM EXCURSION WHERE port_id = ?");
         statement.setLong(1, portId);
+        return statement;
+    }
+
+    private PreparedStatement statementByUser(Connection connection, Long userId) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(FIND);
+        statement.setLong(1, userId);
         return statement;
     }
 

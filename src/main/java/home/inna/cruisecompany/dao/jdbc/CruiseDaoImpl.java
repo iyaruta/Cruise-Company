@@ -13,12 +13,34 @@ import java.util.List;
 public class CruiseDaoImpl implements CruiseDao {
 
     private static final Logger LOG = LoggerFactory.getLogger(CruiseDaoImpl.class);
+    private static final String FIND = "SELECT c.* FROM Ticket t \n" +
+            "  INNER JOIN USER_TO_TICKET utt ON t.id = utt.ticket_id \n" +
+            "  INNER JOIN Cruise c ON t.cruise_id = c.id \n" +
+            "  WHERE utt.user_id = ?";
 
     @Override
     public List<Cruise> findAll() {
         List<Cruise> cruises = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement("SELECT * FROM CRUISE");
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                Cruise cruise = getCruise(resultSet);
+                cruises.add(cruise);
+            }
+
+        } catch (Exception e) {
+            LOG.error("SQL error", e);
+            throw new IllegalStateException("SQL error", e);
+        }
+        return cruises;
+    }
+
+    public List<Cruise> cruiseByUser(Long userId) {
+        List<Cruise> cruises = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getConnection();
+             PreparedStatement statement = statementByUser(connection, userId);
              ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
@@ -103,6 +125,12 @@ public class CruiseDaoImpl implements CruiseDao {
         cruise.setShipId(resultSet.getLong("ship_id"));
         cruise.setName(resultSet.getString("name"));
         return cruise;
+    }
+
+    private PreparedStatement statementByUser(Connection connection, Long userId) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(FIND);
+        statement.setLong(1, userId);
+        return statement;
     }
 
     private PreparedStatement preparedStatement(Connection connection, Cruise cruise) throws SQLException {

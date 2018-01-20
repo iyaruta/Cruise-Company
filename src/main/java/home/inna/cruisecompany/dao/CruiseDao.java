@@ -8,6 +8,8 @@ public interface CruiseDao {
 
     List<Cruise> findAll();
 
+    List<Cruise> cruiseByUser(Long userId);
+
     Cruise get(Long cruiseId);
 
     Long save(Cruise cruise);
