@@ -4,6 +4,7 @@ import home.inna.cruisecompany.dao.ConnectionPool;
 import home.inna.cruisecompany.dao.CruiseDao;
 import home.inna.cruisecompany.data.Cruise;
 import home.inna.cruisecompany.data.CruiseTicket;
+import home.inna.cruisecompany.data.Waypoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +21,7 @@ public class CruiseDaoImpl implements CruiseDao {
             "  WHERE utt.user_id = ?";
 
     private static final String TICKET_SQL = "INSERT INTO TICKET(cruise_id, ticket_class_id) VALUES (?, ?)";
+    public static final String WAYPOINT_SQL = "INSERT INTO WAYPOINT(port_id, cruise_id, arrival, departure) VALUES (?, ?, ?, ?)";
 
     @Override
     public List<Cruise> findAll() {
@@ -80,8 +82,9 @@ public class CruiseDaoImpl implements CruiseDao {
     public void save(Cruise cruise) {
         try (Connection connection = ConnectionPool.getConnection(false);
              PreparedStatement statement = saveCruise(connection, cruise);
-             ResultSet rs = statement.getGeneratedKeys();
-             PreparedStatement ticketStatement = saveTickets(connection, cruise, rs)) {
+             ResultSet rs = getResultSet(statement, cruise);
+             PreparedStatement ticketStatement = saveTickets(connection, cruise);
+             PreparedStatement waypointsStatement = saveWaypoints(connection, cruise)) {
 
             if (!ConnectionPool.isTestMode()) {
                 connection.commit();
@@ -147,14 +150,40 @@ public class CruiseDaoImpl implements CruiseDao {
         return statement;
     }
 
-    private PreparedStatement saveTickets(Connection connection, Cruise cruise, ResultSet rs) throws SQLException {
-        rs.next();
-        long cruiseId = rs.getLong(1);
+    private ResultSet getResultSet(PreparedStatement statement, Cruise cruise) throws SQLException {
+        ResultSet resultSet = statement.getGeneratedKeys();
+        resultSet.next();
+        cruise.setId(resultSet.getLong(1));
+        return resultSet;
+    }
 
+    private PreparedStatement saveTickets(Connection connection, Cruise cruise) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(TICKET_SQL);
         for (CruiseTicket ticket : cruise.getTickets()) {
-            statement.setLong(1, cruiseId);
+            statement.setLong(1, cruise.getId());
             statement.setLong(2, ticket.getId());
+            statement.addBatch();
+        }
+        statement.executeBatch();
+        return statement;
+    }
+
+    private PreparedStatement saveWaypoints(Connection connection, Cruise cruise) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(WAYPOINT_SQL);
+        for (Waypoint waypoint : cruise.getWaypoints()) {
+            statement.setLong(1, waypoint.getPortId());
+            statement.setLong(2, cruise.getId());
+            if (waypoint.getArrival() == null) {
+                statement.setTimestamp(3, null);
+            } else {
+                statement.setTimestamp(3, Timestamp.valueOf(waypoint.getArrival()));
+            }
+
+            if (waypoint.getDeparture() == null) {
+                statement.setTimestamp(4, null);
+            } else {
+                statement.setTimestamp(4, Timestamp.valueOf(waypoint.getDeparture()));
+            }
             statement.addBatch();
         }
         statement.executeBatch();

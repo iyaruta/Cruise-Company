@@ -44,6 +44,7 @@ public class CruiseDaoImplTest {
         cruise.setShipId(2L);
         cruise.setName("Faraway island");
         cruise.setTickets(Collections.emptyList());
+        cruise.setWaypoints(Collections.emptyList());
         cruiseDao.save(cruise);
     }
 

@@ -9,6 +9,7 @@ public class Cruise {
     private String name;
 
     private List<CruiseTicket> tickets;
+    private List<Waypoint> waypoints;
 
     public Long getId() {
         return id;
@@ -40,5 +41,13 @@ public class Cruise {
 
     public void setTickets(List<CruiseTicket> tickets) {
         this.tickets = tickets;
+    }
+
+    public List<Waypoint> getWaypoints() {
+        return waypoints;
+    }
+
+    public void setWaypoints(List<Waypoint> waypoints) {
+        this.waypoints = waypoints;
     }
 }

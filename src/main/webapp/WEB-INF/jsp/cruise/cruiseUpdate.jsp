@@ -25,6 +25,39 @@
         <label for="name">Название:</label>
         <input type="text" id="name" name="name" value="${cruise.name}">
     </div>
+    <c:if test="${empty cruise.id}">
+
+
+        <div class="form-group">
+            <label for="departure">Отправление:</label>
+            <input type="datetime-local" id="departure" name="departure">
+        </div>
+        <div class="form-group">
+            <label for="departure_port">Порт отправления:</label>
+            <select id="departure_port" name="departurePortId">
+                <option>Не выбрано</option>
+                <c:forEach items="${ports}" var="port">
+                    <option value="${port.id}">${port.name}</option>
+                </c:forEach>
+            </select>
+        </div>
+
+
+        <div class="form-group">
+            <label for="arrival">Прибытие:</label>
+            <input type="datetime-local" id="arrival" name="arrival">
+        </div>
+        <div class="form-group">
+            <label for="arrival_port">Порт прибытия:</label>
+            <select id="arrival_port" name="arrivalPortId">
+                <option>Не выбрано</option>
+                <c:forEach items="${ports}" var="port">
+                    <option value="${port.id}">${port.name}</option>
+                </c:forEach>
+            </select>
+        </div>
+
+    </c:if>
     <div class="form-group">
         <input type="submit">
     </div>
