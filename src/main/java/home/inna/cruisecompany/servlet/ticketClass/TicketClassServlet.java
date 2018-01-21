@@ -1,8 +1,8 @@
 package home.inna.cruisecompany.servlet.ticketClass;
 
-import home.inna.cruisecompany.dao.TicketClassDao;
-import home.inna.cruisecompany.dao.jdbc.TicketClassDaoImpl;
 import home.inna.cruisecompany.data.TicketClass;
+import home.inna.cruisecompany.service.TicketClassService;
+import home.inna.cruisecompany.service.impl.TicketClassServiceImpl;
 import home.inna.cruisecompany.util.WebUtil;
 
 import javax.servlet.RequestDispatcher;
@@ -17,12 +17,12 @@ import java.util.List;
 @WebServlet("/admin/ticketClass")
 public class TicketClassServlet extends HttpServlet {
 
-    private TicketClassDao ticketClassDao = new TicketClassDaoImpl();
+    private TicketClassService ticketClassService = new TicketClassServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long shipId = WebUtil.id(req, "shipId");
-        List<TicketClass> ticketClasses = ticketClassDao.findByShip(shipId);
+        List<TicketClass> ticketClasses = ticketClassService.findByShip(shipId);
         req.setAttribute("shipId", req.getParameter("shipId"));
         req.setAttribute("ticketClasses", ticketClasses);
         RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/WEB-INF/jsp/ticketClass/ticketClass.jsp");

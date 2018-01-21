@@ -1,8 +1,8 @@
 package home.inna.cruisecompany.servlet;
 
-import home.inna.cruisecompany.dao.UserDao;
-import home.inna.cruisecompany.dao.jdbc.UserDaoImpl;
 import home.inna.cruisecompany.data.User;
+import home.inna.cruisecompany.service.UserService;
+import home.inna.cruisecompany.service.impl.UserServiceImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,7 +17,7 @@ import java.util.Objects;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 
-    private UserDao userDao = new UserDaoImpl();
+    private UserService userService = new UserServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
         String name = req.getParameter("name");
         String password = req.getParameter("password");
 
-        User user = userDao.getByName(name);
+        User user = userService.getByName(name);
         if (user == null || !Objects.equals(user.getPassword(), password)) {
             req.setAttribute("error_login", true);
             RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/WEB-INF/jsp/login.jsp");

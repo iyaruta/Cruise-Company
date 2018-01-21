@@ -1,8 +1,8 @@
 package home.inna.cruisecompany.servlet.ticketClass;
 
-import home.inna.cruisecompany.dao.TicketClassDao;
-import home.inna.cruisecompany.dao.jdbc.TicketClassDaoImpl;
 import home.inna.cruisecompany.data.TicketClass;
+import home.inna.cruisecompany.service.TicketClassService;
+import home.inna.cruisecompany.service.impl.TicketClassServiceImpl;
 import home.inna.cruisecompany.util.WebUtil;
 
 import javax.servlet.RequestDispatcher;
@@ -16,13 +16,13 @@ import java.io.IOException;
 @WebServlet("/admin/ticketClass/save")
 public class TicketClassSaveServlet extends HttpServlet {
 
-    private TicketClassDao ticketClassDao = new TicketClassDaoImpl();
+    private TicketClassService ticketClassService = new TicketClassServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long id = WebUtil.id(req);
         if (id != null) {
-            TicketClass ticketClass = ticketClassDao.get(id);
+            TicketClass ticketClass = ticketClassService.get(id);
             req.setAttribute("ticketClass", ticketClass);
         }
         req.setAttribute("shipId", req.getParameter("shipId"));
@@ -32,24 +32,20 @@ public class TicketClassSaveServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Long id = WebUtil.id(req);
         Long shipId = Long.valueOf(req.getParameter("shipId"));
         String type = req.getParameter("type");
         Integer count = Integer.valueOf(req.getParameter("count"));
         String bonus = req.getParameter("bonus");
 
         TicketClass ticketClass = new TicketClass();
+        ticketClass.setId(id);
         ticketClass.setShipId(shipId);
         ticketClass.setType(type);
         ticketClass.setCount(count);
         ticketClass.setBonus(bonus);
 
-        Long id = WebUtil.id(req);
-        if (id == null) {
-            ticketClassDao.save(ticketClass);
-        } else {
-            ticketClass.setId(id);
-            ticketClassDao.update(ticketClass);
-        }
+        ticketClassService.saveOrUpdate(ticketClass);
         resp.sendRedirect("/admin/ticketClass?shipId=" + shipId);
     }
 }

@@ -1,7 +1,7 @@
 package home.inna.cruisecompany.servlet.ship;
 
-import home.inna.cruisecompany.dao.ShipDao;
-import home.inna.cruisecompany.dao.jdbc.ShipDaoImpl;
+import home.inna.cruisecompany.service.ShipService;
+import home.inna.cruisecompany.service.impl.ShipServiceImpl;
 import home.inna.cruisecompany.util.WebUtil;
 
 import javax.servlet.ServletException;
@@ -14,12 +14,12 @@ import java.io.IOException;
 @WebServlet("/admin/ship/delete")
 public class ShipDeleteServlet extends HttpServlet {
 
-    private ShipDao shipDao = new ShipDaoImpl();
+    private ShipService shipService = new ShipServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long util = WebUtil.id(req);
-        shipDao.delete(util);
+        shipService.delete(util);
 
         resp.sendRedirect("/ship");
     }

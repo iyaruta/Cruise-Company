@@ -1,8 +1,8 @@
 package home.inna.cruisecompany.servlet.ticket;
 
-import home.inna.cruisecompany.dao.TicketDao;
-import home.inna.cruisecompany.dao.jdbc.TicketDaoImpl;
 import home.inna.cruisecompany.data.Ticket;
+import home.inna.cruisecompany.service.TicketService;
+import home.inna.cruisecompany.service.impl.TicketServiceImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 @WebServlet("/admin/ticket/save")
 public class TicketSaveServlet extends HttpServlet {
 
-    private TicketDao ticketDao = new TicketDaoImpl();
+    private TicketService ticketService = new TicketServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -36,7 +36,7 @@ public class TicketSaveServlet extends HttpServlet {
         ticket.setCruiseId(cruiseId);
         ticket.setTicketClassId(ticketClassId);
         ticket.setPrice(price);
-        ticketDao.update(ticket);
+        ticketService.update(ticket);
 
         resp.sendRedirect("/cruise/details?id=" + cruiseId);
     }

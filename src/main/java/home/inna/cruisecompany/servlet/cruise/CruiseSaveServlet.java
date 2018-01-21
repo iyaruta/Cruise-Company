@@ -1,11 +1,11 @@
 package home.inna.cruisecompany.servlet.cruise;
 
-import home.inna.cruisecompany.dao.ShipDao;
-import home.inna.cruisecompany.dao.jdbc.ShipDaoImpl;
 import home.inna.cruisecompany.data.Cruise;
 import home.inna.cruisecompany.data.Ship;
 import home.inna.cruisecompany.service.CruiseService;
+import home.inna.cruisecompany.service.ShipService;
 import home.inna.cruisecompany.service.impl.CruiseServiceImpl;
+import home.inna.cruisecompany.service.impl.ShipServiceImpl;
 import home.inna.cruisecompany.util.WebUtil;
 
 import javax.servlet.RequestDispatcher;
@@ -22,7 +22,7 @@ public class CruiseSaveServlet extends HttpServlet {
 
 
     private CruiseService cruiseService = new CruiseServiceImpl();
-    private ShipDao shipDao = new ShipDaoImpl();
+    private ShipService shipService = new ShipServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -31,7 +31,7 @@ public class CruiseSaveServlet extends HttpServlet {
             Cruise cruise = cruiseService.get(id);
             req.setAttribute("cruise", cruise);
         }
-        List<Ship> ships = shipDao.findAll();
+        List<Ship> ships = shipService.findAll();
         req.setAttribute("ships", ships);
         RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/WEB-INF/jsp/cruise/cruiseUpdate.jsp");
         requestDispatcher.forward(req, resp);

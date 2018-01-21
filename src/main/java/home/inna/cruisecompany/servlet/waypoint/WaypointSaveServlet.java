@@ -1,11 +1,11 @@
 package home.inna.cruisecompany.servlet.waypoint;
 
-import home.inna.cruisecompany.dao.PortDao;
-import home.inna.cruisecompany.dao.WaypointDao;
-import home.inna.cruisecompany.dao.jdbc.PortDaoImpl;
-import home.inna.cruisecompany.dao.jdbc.WaypointDaoImpl;
 import home.inna.cruisecompany.data.Port;
 import home.inna.cruisecompany.data.Waypoint;
+import home.inna.cruisecompany.service.PortService;
+import home.inna.cruisecompany.service.WaypointService;
+import home.inna.cruisecompany.service.impl.PortServiceImpl;
+import home.inna.cruisecompany.service.impl.WaypointServiceImpl;
 import home.inna.cruisecompany.util.WebUtil;
 
 import javax.servlet.RequestDispatcher;
@@ -21,18 +21,18 @@ import java.util.List;
 @WebServlet("/admin/waypoint/save")
 public class WaypointSaveServlet extends HttpServlet {
 
-    private WaypointDao waypointDao = new WaypointDaoImpl();
-    private PortDao portDao = new PortDaoImpl();
+    private WaypointService waypointService = new WaypointServiceImpl();
+    private PortService portService = new PortServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long id = WebUtil.id(req);
         if (id != null) {
-            Waypoint waypoint = waypointDao.get(id);
+            Waypoint waypoint = waypointService.get(id);
             req.setAttribute("waypoint", waypoint);
         }
 
-        List<Port> ports = portDao.findAll();
+        List<Port> ports = portService.findAll();
         req.setAttribute("ports", ports);
         req.setAttribute("cruiseId", req.getParameter("cruiseId"));
         RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/WEB-INF/jsp/waypoint/waypointUpdate.jsp");
@@ -41,24 +41,30 @@ public class WaypointSaveServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Long id = WebUtil.id(req);
         Long cruiseId = Long.valueOf(req.getParameter("cruiseId"));
         Long portId = Long.valueOf(req.getParameter("portId"));
-        LocalDateTime arrival = LocalDateTime.parse(req.getParameter("arrival"));
-        LocalDateTime departure = LocalDateTime.parse(req.getParameter("departure"));
+
+        String arrivalStr = req.getParameter("arrival");
+        LocalDateTime arrival = null;
+        if (arrivalStr != null && !arrivalStr.isEmpty()) {
+            arrival = LocalDateTime.parse(arrivalStr);
+        }
+
+        String departureStr = req.getParameter("departure");
+        LocalDateTime departure = null;
+        if (departureStr != null && !departureStr.isEmpty()) {
+            departure = LocalDateTime.parse(departureStr);
+        }
 
         Waypoint waypoint = new Waypoint();
+        waypoint.setId(id);
         waypoint.setPortId(portId);
         waypoint.setCruiseId(cruiseId);
         waypoint.setArrival(arrival);
         waypoint.setDeparture(departure);
 
-        Long id = WebUtil.id(req);
-        if (id == null) {
-            waypointDao.save(waypoint);
-        } else {
-            waypoint.setId(id);
-            waypointDao.update(waypoint);
-        }
+        waypointService.saveOrUpdate(waypoint);
         resp.sendRedirect("/cruise/details?id=" + cruiseId);
     }
 }

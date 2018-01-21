@@ -40,7 +40,7 @@ public class CruiseDaoImpl implements CruiseDao {
         return cruises;
     }
 
-    public List<Cruise> cruiseByUser(Long userId) {
+    public List<Cruise> findByUser(Long userId) {
         List<Cruise> cruises = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = statementByUser(connection, userId);
@@ -83,7 +83,9 @@ public class CruiseDaoImpl implements CruiseDao {
              ResultSet rs = statement.getGeneratedKeys();
              PreparedStatement ticketStatement = saveTickets(connection, cruise, rs)) {
 
-            connection.commit();
+            if (!ConnectionPool.isTestMode()) {
+                connection.commit();
+            }
         } catch (Exception e) {
             LOG.error("SQL error", e);
             throw new IllegalStateException("SQL error", e);

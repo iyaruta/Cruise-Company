@@ -60,10 +60,7 @@ public class WaypointDaoImpl implements WaypointDao {
     public void save(Waypoint waypoint) {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(SQL)) {
-            statement.setLong(1, waypoint.getPortId());
-            statement.setLong(2, waypoint.getCruiseId());
-            statement.setTimestamp(3, Timestamp.valueOf(waypoint.getArrival()));
-            statement.setTimestamp(4, Timestamp.valueOf(waypoint.getDeparture()));
+            apply(waypoint, statement);
             statement.executeUpdate();
         } catch (Exception e) {
             LOG.error("SQL error", e);
@@ -76,10 +73,7 @@ public class WaypointDaoImpl implements WaypointDao {
     public void update(Waypoint waypoint) {
         try (Connection connection = ConnectionPool.getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE)) {
-            statement.setLong(1, waypoint.getPortId());
-            statement.setLong(2, waypoint.getCruiseId());
-            statement.setTimestamp(3, Timestamp.valueOf(waypoint.getArrival()));
-            statement.setTimestamp(4, Timestamp.valueOf(waypoint.getDeparture()));
+            apply(waypoint, statement);
             statement.setLong(5, waypoint.getId());
             statement.executeUpdate();
         } catch (Exception e) {
@@ -100,6 +94,22 @@ public class WaypointDaoImpl implements WaypointDao {
             throw new IllegalStateException("SQL error", e);
         }
 
+    }
+
+    private void apply(Waypoint waypoint, PreparedStatement statement) throws SQLException {
+        statement.setLong(1, waypoint.getPortId());
+        statement.setLong(2, waypoint.getCruiseId());
+        if (waypoint.getArrival() == null) {
+            statement.setTimestamp(3, null);
+        } else {
+            statement.setTimestamp(3, Timestamp.valueOf(waypoint.getArrival()));
+        }
+
+        if (waypoint.getDeparture() == null) {
+            statement.setTimestamp(4, null);
+        } else {
+            statement.setTimestamp(4, Timestamp.valueOf(waypoint.getDeparture()));
+        }
     }
 
     private PreparedStatement statement(Connection connection, Long waypointId) throws SQLException {

@@ -1,9 +1,9 @@
 package home.inna.cruisecompany.servlet;
 
-import home.inna.cruisecompany.dao.UserDao;
-import home.inna.cruisecompany.dao.jdbc.UserDaoImpl;
 import home.inna.cruisecompany.data.Role;
 import home.inna.cruisecompany.data.User;
+import home.inna.cruisecompany.service.UserService;
+import home.inna.cruisecompany.service.impl.UserServiceImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,7 +16,7 @@ import java.io.IOException;
 @WebServlet("/registration")
 public class RegistrationServlet extends HttpServlet {
 
-    private UserDao userDao = new UserDaoImpl();
+    private UserService userService = new UserServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -34,7 +34,7 @@ public class RegistrationServlet extends HttpServlet {
         user.setPassword(password);
         user.setRole(Role.USER);
 
-        userDao.save(user);
+        userService.save(user);
         resp.sendRedirect("/login");
     }
 }

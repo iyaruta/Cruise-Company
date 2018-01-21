@@ -38,6 +38,10 @@ public class ConnectionPool {
         return getConnection(true);
     }
 
+    public static boolean isTestMode() {
+        return testMode;
+    }
+
     static void setTestMode(boolean testMode) {
         ConnectionPool.testMode = testMode;
     }

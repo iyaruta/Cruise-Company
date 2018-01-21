@@ -1,8 +1,8 @@
 package home.inna.cruisecompany.servlet.cruise;
 
-import home.inna.cruisecompany.dao.CruiseDao;
-import home.inna.cruisecompany.dao.jdbc.CruiseDaoImpl;
 import home.inna.cruisecompany.data.Cruise;
+import home.inna.cruisecompany.service.CruiseService;
+import home.inna.cruisecompany.service.impl.CruiseServiceImpl;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -16,11 +16,11 @@ import java.util.List;
 @WebServlet("/cruise")
 public class CruiseServlet extends HttpServlet {
 
-    private CruiseDao cruiseDao = new CruiseDaoImpl();
+    private CruiseService cruiseService = new CruiseServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        List<Cruise> cruises = cruiseDao.findAll();
+        List<Cruise> cruises = cruiseService.findAll();
 
         req.setAttribute("cruises", cruises);
         RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/WEB-INF/jsp/cruise/cruise.jsp");

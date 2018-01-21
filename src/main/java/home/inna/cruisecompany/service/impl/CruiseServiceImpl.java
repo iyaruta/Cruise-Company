@@ -25,7 +25,6 @@ public class CruiseServiceImpl implements CruiseService {
             List<CruiseTicket> tickets = ticketClasses.stream().map(CruiseTicket::new).collect(Collectors.toList());
             cruise.setTickets(tickets);
 
-
             cruiseDao.save(cruise);
         } else {
             cruiseDao.update(cruise);
@@ -33,7 +32,23 @@ public class CruiseServiceImpl implements CruiseService {
     }
 
     @Override
+    public List<Cruise> cruiseByUser(Long userId) {
+        return cruiseDao.findByUser(userId);
+    }
+
+    @Override
     public Cruise get(Long id) {
         return cruiseDao.get(id);
     }
+
+    @Override
+    public List<Cruise> findAll() {
+        return cruiseDao.findAll();
+    }
+
+    @Override
+    public void delete(Long id) {
+        cruiseDao.delete(id);
+    }
 }
+

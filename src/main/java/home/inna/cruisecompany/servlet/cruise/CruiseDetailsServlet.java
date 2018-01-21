@@ -1,17 +1,17 @@
 package home.inna.cruisecompany.servlet.cruise;
 
-import home.inna.cruisecompany.dao.CruiseDao;
-import home.inna.cruisecompany.dao.CruiseTicketDao;
-import home.inna.cruisecompany.dao.ShipDao;
-import home.inna.cruisecompany.dao.WaypointDao;
-import home.inna.cruisecompany.dao.jdbc.CruiseDaoImpl;
-import home.inna.cruisecompany.dao.jdbc.CruiseTicketDaoImpl;
-import home.inna.cruisecompany.dao.jdbc.ShipDaoImpl;
-import home.inna.cruisecompany.dao.jdbc.WaypointDaoImpl;
 import home.inna.cruisecompany.data.Cruise;
 import home.inna.cruisecompany.data.CruiseTicket;
 import home.inna.cruisecompany.data.Ship;
 import home.inna.cruisecompany.data.Waypoint;
+import home.inna.cruisecompany.service.CruiseService;
+import home.inna.cruisecompany.service.CruiseTicketService;
+import home.inna.cruisecompany.service.ShipService;
+import home.inna.cruisecompany.service.WaypointService;
+import home.inna.cruisecompany.service.impl.CruiseServiceImpl;
+import home.inna.cruisecompany.service.impl.CruiseTicketServiceImpl;
+import home.inna.cruisecompany.service.impl.ShipServiceImpl;
+import home.inna.cruisecompany.service.impl.WaypointServiceImpl;
 import home.inna.cruisecompany.util.WebUtil;
 
 import javax.servlet.RequestDispatcher;
@@ -26,19 +26,19 @@ import java.util.List;
 @WebServlet("/cruise/details")
 public class CruiseDetailsServlet extends HttpServlet {
 
-    private WaypointDao waypointDao = new WaypointDaoImpl();
-    private CruiseDao cruiseDao = new CruiseDaoImpl();
-    private ShipDao shipDao = new ShipDaoImpl();
-    private CruiseTicketDao cruiseTicketDao = new CruiseTicketDaoImpl();
+    private CruiseService cruiseService = new CruiseServiceImpl();
+    private WaypointService waypointService = new WaypointServiceImpl();
+    private ShipService shipService = new ShipServiceImpl();
+    private CruiseTicketService cruiseTicketService = new CruiseTicketServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long id = WebUtil.id(req);
 
-        List<Waypoint> waypoints = waypointDao.findByCruise(id);
-        Cruise cruise = cruiseDao.get(id);
-        List<CruiseTicket> ticketClasses = cruiseTicketDao.find(id);
-        Ship ship = shipDao.get(cruise.getShipId());
+        List<Waypoint> waypoints = waypointService.findByCruise(id);
+        Cruise cruise = cruiseService.get(id);
+        List<CruiseTicket> ticketClasses = cruiseTicketService.find(id);
+        Ship ship = shipService.get(cruise.getShipId());
         req.setAttribute("waypoints", waypoints);
         req.setAttribute("cruise", cruise);
         req.setAttribute("ticketClasses", ticketClasses);

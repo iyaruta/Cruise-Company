@@ -1,8 +1,8 @@
 package home.inna.cruisecompany.servlet.excursion;
 
-import home.inna.cruisecompany.dao.ExcursionDao;
-import home.inna.cruisecompany.dao.jdbc.ExcursionDaoImpl;
 import home.inna.cruisecompany.data.Excursion;
+import home.inna.cruisecompany.service.ExcursionService;
+import home.inna.cruisecompany.service.impl.ExcursionServiceImpl;
 import home.inna.cruisecompany.util.WebUtil;
 
 import javax.servlet.RequestDispatcher;
@@ -17,13 +17,13 @@ import java.math.BigDecimal;
 @WebServlet("/admin/excursion/save")
 public class ExcursionSaveServlet extends HttpServlet {
 
-    private ExcursionDao excursionDao = new ExcursionDaoImpl();
+    private ExcursionService excursionService = new ExcursionServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long id = WebUtil.id(req);
         if (id != null) {
-            Excursion excursion = excursionDao.get(id);
+            Excursion excursion = excursionService.get(id);
             req.setAttribute("excursion", excursion);
         }
         req.setAttribute("portId", req.getParameter("portId"));
@@ -33,24 +33,20 @@ public class ExcursionSaveServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Long id = WebUtil.id(req);
         String name = req.getParameter("name");
         String details = req.getParameter("details");
         BigDecimal price = new BigDecimal(req.getParameter("price"));
         Long portId = WebUtil.id(req, "portId");
 
         Excursion excursion = new Excursion();
+        excursion.setId(id);
         excursion.setName(name);
         excursion.setDetails(details);
         excursion.setPortId(portId);
         excursion.setPrice(price);
 
-        Long id = WebUtil.id(req);
-        if (id == null) {
-            excursionDao.save(excursion);
-        } else {
-            excursion.setId(id);
-            excursionDao.update(excursion);
-        }
+        excursionService.saveOrUpdate(excursion);
         resp.sendRedirect("/excursion?portId=" + portId);
     }
 }

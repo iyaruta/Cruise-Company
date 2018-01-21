@@ -8,7 +8,7 @@ public interface CruiseDao {
 
     List<Cruise> findAll();
 
-    List<Cruise> cruiseByUser(Long userId);
+    List<Cruise> findByUser(Long userId);
 
     Cruise get(Long cruiseId);
 

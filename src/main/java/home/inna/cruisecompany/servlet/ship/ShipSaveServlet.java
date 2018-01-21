@@ -1,8 +1,8 @@
 package home.inna.cruisecompany.servlet.ship;
 
-import home.inna.cruisecompany.dao.ShipDao;
-import home.inna.cruisecompany.dao.jdbc.ShipDaoImpl;
 import home.inna.cruisecompany.data.Ship;
+import home.inna.cruisecompany.service.ShipService;
+import home.inna.cruisecompany.service.impl.ShipServiceImpl;
 import home.inna.cruisecompany.util.WebUtil;
 
 import javax.servlet.RequestDispatcher;
@@ -16,13 +16,13 @@ import java.io.IOException;
 @WebServlet("/admin/ship/save")
 public class ShipSaveServlet extends HttpServlet {
 
-    private ShipDao shipDao = new ShipDaoImpl();
+    private ShipService shipService = new ShipServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long id = WebUtil.id(req);
         if (id != null) {
-            Ship ship = shipDao.get(id);
+            Ship ship = shipService.get(id);
             req.setAttribute("ship", ship);
         }
         RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher("/WEB-INF/jsp/ship/shipUpdate.jsp");
@@ -31,23 +31,18 @@ public class ShipSaveServlet extends HttpServlet {
 
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Long id = WebUtil.id(req);
         String name = req.getParameter("name");
         Integer passengers = Integer.valueOf(req.getParameter("passengers"));
         Integer crew = Integer.valueOf(req.getParameter("crew"));
 
         Ship ship = new Ship();
+        ship.setId(id);
         ship.setName(name);
         ship.setPassengers(passengers);
         ship.setCrew(crew);
 
-
-        Long id = WebUtil.id(req);
-        if (id == null) {
-            shipDao.save(ship);
-        } else {
-            ship.setId(id);
-            shipDao.update(ship);
-        }
+        shipService.saveOrUpdate(ship);
         resp.sendRedirect("/ship");
     }
 }

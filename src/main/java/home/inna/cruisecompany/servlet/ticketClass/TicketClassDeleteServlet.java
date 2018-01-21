@@ -1,8 +1,8 @@
 package home.inna.cruisecompany.servlet.ticketClass;
 
-import home.inna.cruisecompany.dao.TicketClassDao;
-import home.inna.cruisecompany.dao.jdbc.TicketClassDaoImpl;
 import home.inna.cruisecompany.data.TicketClass;
+import home.inna.cruisecompany.service.TicketClassService;
+import home.inna.cruisecompany.service.impl.TicketClassServiceImpl;
 import home.inna.cruisecompany.util.WebUtil;
 
 import javax.servlet.ServletException;
@@ -15,14 +15,14 @@ import java.io.IOException;
 @WebServlet("/admin/ticketClass/delete")
 public class TicketClassDeleteServlet extends HttpServlet {
 
-    private TicketClassDao ticketClassDao = new TicketClassDaoImpl();
+    private TicketClassService ticketClassService = new TicketClassServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long util = WebUtil.id(req);
-        TicketClass ticketClass = ticketClassDao.get(util);
+        TicketClass ticketClass = ticketClassService.get(util);
         Long shipId = ticketClass.getShipId();
-        ticketClassDao.delete(util);
+        ticketClassService.delete(util);
         resp.sendRedirect("/admin/ticketClass?shipId=" + shipId);
     }
 }

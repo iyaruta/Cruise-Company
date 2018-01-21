@@ -1,7 +1,7 @@
 package home.inna.cruisecompany.servlet.cruise;
 
-import home.inna.cruisecompany.dao.CruiseDao;
-import home.inna.cruisecompany.dao.jdbc.CruiseDaoImpl;
+import home.inna.cruisecompany.service.CruiseService;
+import home.inna.cruisecompany.service.impl.CruiseServiceImpl;
 import home.inna.cruisecompany.util.WebUtil;
 
 import javax.servlet.ServletException;
@@ -14,12 +14,12 @@ import java.io.IOException;
 @WebServlet("/admin/cruise/delete")
 public class CruiseDeleteServlet extends HttpServlet {
 
-    private CruiseDao cruiseDao = new CruiseDaoImpl();
+    private CruiseService cruiseService = new CruiseServiceImpl();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Long id = WebUtil.id(req);
-        cruiseDao.delete(id);
+        cruiseService.delete(id);
 
         resp.sendRedirect("/cruise");
     }
