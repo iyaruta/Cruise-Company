@@ -120,7 +120,9 @@ create table User
 		primary key,
 	name varchar(50) not null,
 	role int not null,
-	password varchar(50) not null
+	password varchar(50) not null,
+	constraint User_name_uindex
+		unique (name)
 )
 ;
 
