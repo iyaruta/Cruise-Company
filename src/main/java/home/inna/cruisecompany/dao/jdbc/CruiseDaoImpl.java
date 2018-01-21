@@ -18,7 +18,7 @@ public class CruiseDaoImpl implements CruiseDao {
     private static final String FIND = "SELECT c.* FROM Ticket t \n" +
             "  INNER JOIN USER_TO_TICKET utt ON t.id = utt.ticket_id \n" +
             "  INNER JOIN Cruise c ON t.cruise_id = c.id \n" +
-            "  WHERE utt.user_id = ?";
+            "  WHERE utt.user_id = ? and c.deleted = false";
 
     private static final String TICKET_SQL = "INSERT INTO TICKET(cruise_id, ticket_class_id) VALUES (?, ?)";
     public static final String WAYPOINT_SQL = "INSERT INTO WAYPOINT(port_id, cruise_id, arrival, departure) VALUES (?, ?, ?, ?)";
@@ -27,7 +27,7 @@ public class CruiseDaoImpl implements CruiseDao {
     public List<Cruise> findAll() {
         List<Cruise> cruises = new ArrayList<>();
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement("SELECT * FROM CRUISE");
+             PreparedStatement statement = connection.prepareStatement("SELECT * FROM CRUISE WHERE deleted = false");
              ResultSet resultSet = statement.executeQuery()) {
 
             while (resultSet.next()) {
@@ -112,7 +112,7 @@ public class CruiseDaoImpl implements CruiseDao {
     @Override
     public void delete(Long cruiseId) {
         try (Connection connection = ConnectionPool.getConnection();
-             PreparedStatement statement = connection.prepareStatement("DELETE FROM CRUISE WHERE id = ?")) {
+             PreparedStatement statement = connection.prepareStatement("UPDATE CRUISE SET deleted = true WHERE id = ?")) {
             statement.setLong(1, cruiseId);
             statement.executeUpdate();
         } catch (Exception e) {
@@ -123,7 +123,7 @@ public class CruiseDaoImpl implements CruiseDao {
     }
 
     private PreparedStatement statement(Connection connection, Long cruiseId) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM CRUISE WHERE id = ?");
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM CRUISE WHERE id = ? and deleted = false");
         statement.setLong(1, cruiseId);
         return statement;
     }
