@@ -2,7 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="../include/header.jsp" %>
 
-<h1>Добавить/изменить точку</h1>
+<h1>Добавить/изменить экскурсию</h1>
 <form class="" action="/admin/excursion/save" method="post">
     <c:if test="${not empty excursion.id}">
         <input type="hidden" name="id" value="${excursion.id}">
